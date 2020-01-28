@@ -4,7 +4,6 @@ class DB
 {
     protected $db;
     protected $mysql_table;
-    protected $storagepath;
 
     public function __construct() {
         $credentials = parse_ini_file("credentials.ini");
@@ -16,6 +15,10 @@ class DB
          */
         extract($credentials);
         $this->db = new mysqli($mysql_server, $mysql_user, $mysql_pw, $mysql_db);
+        if (mysqli_connect_errno()) {
+            throw new Exception("Couldn't connect to database! \n", mysqli_connect_error());
+        }
+        $this->mysql_table = $mysql_table;
     }
 
     public function __destruct() {
@@ -31,7 +34,7 @@ class DB
         $query = "SELECT * from ? WHERE ID = ?;";
         $stmt = $this->db->prepare($query);
         $stmt->bind_param("ss", $this->mysql_table, $id);
-        $stmt->execute();
+        $result = $stmt->execute();
         $result = $stmt->get_result();
         return $result->fetch_assoc();
     }
@@ -49,7 +52,6 @@ class DB
         $query = "INSERT INTO ? (is_active, name, address, price_beer, price_softdrink, has_food, url, desc, category, last_update) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
         $stmt = $this->db->prepare($query);
         $stmt->bind_param("sissddisssss", $this->mysql_table, $locationObject["is_active"], $locationObject["name"], $locationObject["address"], $locationObject["price_beer"], $locationObject["price_softdrink"], $locationObject["has_food"], $locationObject["url"], $locationObject["desc"], $locationObject["category"], $locationObject["last_update"]);
-
     }
 
     public function alterLocation($locationObject) {
@@ -72,12 +74,9 @@ class DB
     }
 
     public function getAllLocations() {
-        $query = "SELECT * FROM ?;";
-        $stmt = $this->db->prepare($query);
-        $stmt->bind_param("s", $this->mysql_table);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        if(empty($result)) {
+        $query = "SELECT * FROM {$this->mysql_table};";
+        $result = $this->db->query($query);
+        if(!($result->num_rows > 0)) {
             throw new Exception("No results to be shown!");
         }
         return $result->fetch_assoc();
