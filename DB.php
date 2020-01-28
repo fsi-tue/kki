@@ -4,6 +4,7 @@ class DB
 {
     protected $db;
     protected $mysql_table;
+    protected $storagepath;
 
     public function __construct() {
         $credentials = parse_ini_file("credentials.ini");
@@ -57,7 +58,7 @@ class DB
             if(!isset($value))
                 $value = NULL;
         }
-        $query = "UPDATE ? SET is_active = ?, name = ?, address = ?, price_beer = ?, price_softdrink = ?, has_food = ?, url = ?, desc = ?, category = ?, last_update = ? WHERE ID=?";
+        $query = "UPDATE ? SET is_active = ?, name = ?, address = ?, price_beer = ?, price_softdrink = ?, has_food = ?, url = ?, desc = ?, category = ?, last_update = ? WHERE ID=?;";
         $stmt = $this->db->prepare($query);
         $stmt->bind_param("sissddissssi", $this->mysql_table, $locationObject["is_active"], $locationObject["name"], $locationObject["address"], $locationObject["price_beer"], $locationObject["price_softdrink"], $locationObject["has_food"], $locationObject["url"], $locationObject["desc"],$locationObject["category"], $locationObject["last_update"], $locationObject["id"]);
         $stmt->execute();
@@ -71,7 +72,7 @@ class DB
     }
 
     public function getAllLocations() {
-        $query = "SELECT * FROM ?";
+        $query = "SELECT * FROM ?;";
         $stmt = $this->db->prepare($query);
         $stmt->bind_param("s", $this->mysql_table);
         $stmt->execute();
@@ -90,7 +91,7 @@ class DB
      * @throws Exception
      */
     public function dumpToCSV($table, $filename, $delimiter) {
-        $filepath = $storagepath . DIRECTORY_SEPARATOR . $filename;
+        $filepath = $this->storagepath . DIRECTORY_SEPARATOR . $filename;
         $query = "TABLE ? ORDER BY id INTO OUTFILE ? FIELDS TERMINATED BY ? OPTIONALLY ENCLOSED BY '\"', ESCAPED BY '\' LINES TERMINATED BY '\n';";
         $stmt = $this->db->prepare($query);
         $stmt->bind_param("sss", $table, $filepath, $delimiter);
@@ -105,7 +106,7 @@ class DB
 
     public function dumpToSQL($table, $filename, $delimiter) {
         // stolen from https://www.php.net/manual/de/function.str-getcsv.php#117692
-        $filepath = $storagepath . DIRECTORY_SEPARATOR . $filename;
+        $filepath = $this->storagepath . DIRECTORY_SEPARATOR . $filename;
         // This method clears the entire table to avoid doubled entries. Use with caution.
 
     }
