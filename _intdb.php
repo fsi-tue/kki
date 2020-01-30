@@ -24,9 +24,16 @@ if(empty($result)) {
         price_beer FLOAT,
         price_softdrink FLOAT,
         url VARCHAR(100),
+        phone VARCHAR(20),
         has_food BOOLEAN,
+        has_beer BOOLEAN,
+        has_wifi BOOLEAN,
+        has_cocktails BOOLEAN,
+        has_togo BOOLEAN,
+        is_smokers BOOLEAN,
+        is_nonsmokers BOOLEAN,
         description TEXT,
-        category ENUM('Bar','Restaurant','Fastfood') NOT NULL,
+        category ENUM('bar', 'fastfood', 'restaurant', 'club') NOT NULL,
         last_update DATE
         );";
     if (mysqli_query($db, $query)) {

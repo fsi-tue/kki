@@ -4,6 +4,7 @@ class DB
 {
     protected $db;
     protected $mysql_table;
+    protected $storagepath;
 
     public function __construct() {
         $credentials = parse_ini_file("credentials.ini");
@@ -19,6 +20,10 @@ class DB
             throw new Exception("Couldn't connect to database! \n", mysqli_connect_error());
         }
         $this->mysql_table = $mysql_table;
+        $this->storagepath = $storagepath;
+
+        echo "Storage-Path: {$storagepath}";
+        echo "Mysql-Table: {$mysql_table}";
     }
 
     public function __destruct() {
@@ -34,7 +39,6 @@ class DB
         $query = "SELECT * from ? WHERE ID = ?;";
         $stmt = $this->db->prepare($query);
         $stmt->bind_param("ss", $this->mysql_table, $id);
-        $result = $stmt->execute();
         $result = $stmt->get_result();
         return $result->fetch_assoc();
     }
@@ -45,41 +49,70 @@ class DB
      */
     public function insertLocation($locationObject) {
         // set all fields that aren't set in the object to NULL for SQL
-        foreach($locationObject as $key => $value) {
-            if(!isset($value))
-                $value = NULL;
+        //foreach($locationObject as $key => $value) {
+        //    if(empty($value))
+        //        $value = NULL;
+        //}
+        $query = "INSERT INTO {$this->mysql_table} (is_active, name, address, price_beer, price_softdrink, has_food, has_beer, has_cocktails, has_wifi, has_togo, url, description, category, last_update, phone, is_smokers, is_nonsmokers) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+        if(!$stmt = $this->db->prepare($query)) {
+            echo "Prepare failed: (" . $this->db->errno . ") " . $this->db->error;
         }
-        $query = "INSERT INTO ? (is_active, name, address, price_beer, price_softdrink, has_food, url, desc, category, last_update) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-        $stmt = $this->db->prepare($query);
-        $stmt->bind_param("sissddisssss", $this->mysql_table, $locationObject["is_active"], $locationObject["name"], $locationObject["address"], $locationObject["price_beer"], $locationObject["price_softdrink"], $locationObject["has_food"], $locationObject["url"], $locationObject["desc"], $locationObject["category"], $locationObject["last_update"]);
+        $stmt->bind_param("isssddiiiiissssii", $locationObject->is_active, $locationObject->name, $locationObject->address, $locationObject->price_beer, $locationObject->price_softdrink, $locationObject->has_food, $locationObject->has_beer, $locationObject->has_cocktails, $locationObject->has_wifi, $locationObject->has_togo, $locationObject->url, $locationObject->description, $locationObject->category, $locationObject->last_update, $locationObject->phone, $locationObject->is_smokers, $locationObject->is_nonsmokers);
+        $result = $stmt->execute();
+        if($stmt->error){
+            printf("Error: %s.\n", $stmt->error);
+        }
+        $stmt->close();
+        return $result;
     }
 
     public function alterLocation($locationObject) {
         // set all fields that aren't set in the object to NULL for SQL
         foreach($locationObject as $key => $value) {
-            if(!isset($value))
+            if(empty($value))
                 $value = NULL;
         }
-        $query = "UPDATE ? SET is_active = ?, name = ?, address = ?, price_beer = ?, price_softdrink = ?, has_food = ?, url = ?, desc = ?, category = ?, last_update = ? WHERE ID=?;";
-        $stmt = $this->db->prepare($query);
-        $stmt->bind_param("sissddissssi", $this->mysql_table, $locationObject["is_active"], $locationObject["name"], $locationObject["address"], $locationObject["price_beer"], $locationObject["price_softdrink"], $locationObject["has_food"], $locationObject["url"], $locationObject["desc"],$locationObject["category"], $locationObject["last_update"], $locationObject["id"]);
-        $stmt->execute();
+        $query = "UPDATE {$this->mysql_table} SET is_active = ?, name = ?, address = ?, price_beer = ?, price_softdrink = ?, has_food = ?, has_beer = ?, has_cocktails = ?, has_wifi = ?, has_togo = ?, url = ?, description = ?, category = ?, last_update = ?, phone = ?, is_smokers = ?, is_nonsmokers = ? WHERE id = ?;";
+        if(!$stmt = $this->db->prepare($query)) {
+            echo "Prepare failed: (" . $this->db->errno . ") " . $this->db->error;
+        }
+        $stmt->bind_param("sisssddiiiiissssiii", $this->mysql_table, $locationObject->is_active, $locationObject->name, $locationObject->address, $locationObject->price_beer, $locationObject->price_softdrink, $locationObject->has_food, $locationObject->has_beer, $locationObject->has_cocktails, $locationObject->has_wifi, $locationObject->has_togo, $locationObject->url, $locationObject->description, $locationObject->category, $locationObject->last_update, $locationObject->phone, $locationObject->is_smokers, $locationObject->is_nonsmokers, $locationObject->id);
+        $result = $stmt->execute();
+        if($stmt->error){
+            printf("Error: %s.\n", $stmt->error);
+        }
+        $stmt->close();
+        return $result;
     }
 
     public function deleteLocationById($id) {
-        $query = "DELETE from ? WHERE ID = ?;";
-        $stmt = $this->db->prepare($query);
+        $query = "DELETE from {$this->mysql_table} WHERE ID = ?;";
+        if(!$stmt = $this->db->prepare($query)) {
+            echo "Prepare failed: (" . $this->db->errno . ") " . $this->db->error;
+        }
         $stmt->bind_param("ss", $this->mysql_table, $id);
-        $stmt->execute();
+        $result = $stmt->execute();
+        if($stmt->error){
+            printf("Error: %s.\n", $stmt->error);
+        }
+        $stmt->close();
+        return $result;
     }
 
     public function getAllLocations() {
         $query = "SELECT * FROM {$this->mysql_table};";
         $result = $this->db->query($query);
         if(!($result->num_rows > 0)) {
-            throw new Exception("No results to be shown!");
+            echo "No results to be shown!";
+            return false;
+        } else {
+            $locations = [];
+            while ($row = $result->fetch_assoc()) {
+                $locations[] = $row;
+            }
+            $result->free();
+            return $locations;
         }
-        return $result->fetch_assoc();
     }
 
     /**
@@ -89,12 +122,16 @@ class DB
      * @return bool
      * @throws Exception
      */
-    public function dumpToCSV($table, $filename, $delimiter) {
+    public function dumpToCSV($filename, $delimiter) {
         $filepath = $this->storagepath . DIRECTORY_SEPARATOR . $filename;
-        $query = "TABLE ? ORDER BY id INTO OUTFILE ? FIELDS TERMINATED BY ? OPTIONALLY ENCLOSED BY '\"', ESCAPED BY '\' LINES TERMINATED BY '\n';";
+        $query = "TABLE {$this->mysql_table} ORDER BY asc INTO OUTFILE ? FIELDS TERMINATED BY ? OPTIONALLY ENCLOSED BY '\"', ESCAPED BY '\' LINES TERMINATED BY '\n';";
         $stmt = $this->db->prepare($query);
-        $stmt->bind_param("sss", $table, $filepath, $delimiter);
-        $stmt->execute();
+        $stmt->bind_param("ss", $filepath, $delimiter);
+        $result = $stmt->execute();
+        if($stmt->error){
+            printf("Error: %s.\n", $stmt->error);
+        }
+        $stmt->close();
 
         // check if file was created successfully (surround call to function with try/catch)
         if(!file_exists($filepath)) {
@@ -109,6 +146,5 @@ class DB
         // This method clears the entire table to avoid doubled entries. Use with caution.
 
     }
-
 }
 
