@@ -21,26 +21,20 @@ class DB
         }
         $this->mysql_table = $mysql_table;
         $this->storagepath = $storagepath;
-
-        echo "Storage-Path: {$storagepath}";
-        echo "Mysql-Table: {$mysql_table}";
     }
 
     public function __destruct() {
         $this->db->close();
     }
 
-    /**
-     * returns a specific location based on its id.
-     * @param $id: location id
-     * @return array|null based on whether the location exists
-     */
     public function getLocationById($id) {
-        $query = "SELECT * from ? WHERE ID = ?;";
-        $stmt = $this->db->prepare($query);
-        $stmt->bind_param("ss", $this->mysql_table, $id);
-        $result = $stmt->get_result();
-        return $result->fetch_assoc();
+        $query = "SELECT is_active, name, address, price_beer, price_softdrink, has_food, has_beer, has_cocktails, has_wifi, has_togo, url, description, category, last_update, phone, is_smokers, is_nonsmokers FROM {$this->mysql_table} WHERE id = ?;";
+        if(!$stmt = $this->db->prepare($query)) {
+            echo "Prepare failed: (" . $this->db->errno . ") " . $this->db->error;
+        }
+        $stmt->bind_param("i", $id);
+        // use bind_result and create a new object with all the required fields
+
     }
 
     /**
@@ -57,7 +51,7 @@ class DB
         if(!$stmt = $this->db->prepare($query)) {
             echo "Prepare failed: (" . $this->db->errno . ") " . $this->db->error;
         }
-        $stmt->bind_param("isssddiiiiissssii", $locationObject->is_active, $locationObject->name, $locationObject->address, $locationObject->price_beer, $locationObject->price_softdrink, $locationObject->has_food, $locationObject->has_beer, $locationObject->has_cocktails, $locationObject->has_wifi, $locationObject->has_togo, $locationObject->url, $locationObject->description, $locationObject->category, $locationObject->last_update, $locationObject->phone, $locationObject->is_smokers, $locationObject->is_nonsmokers);
+        $stmt->bind_param("issddiiiiisssssii", $locationObject->is_active, $locationObject->name, $locationObject->address, $locationObject->price_beer, $locationObject->price_softdrink, $locationObject->has_food, $locationObject->has_beer, $locationObject->has_cocktails, $locationObject->has_wifi, $locationObject->has_togo, $locationObject->url, $locationObject->description, $locationObject->category, $locationObject->last_update, $locationObject->phone, $locationObject->is_smokers, $locationObject->is_nonsmokers);
         $result = $stmt->execute();
         if($stmt->error){
             printf("Error: %s.\n", $stmt->error);
@@ -76,7 +70,7 @@ class DB
         if(!$stmt = $this->db->prepare($query)) {
             echo "Prepare failed: (" . $this->db->errno . ") " . $this->db->error;
         }
-        $stmt->bind_param("sisssddiiiiissssiii", $this->mysql_table, $locationObject->is_active, $locationObject->name, $locationObject->address, $locationObject->price_beer, $locationObject->price_softdrink, $locationObject->has_food, $locationObject->has_beer, $locationObject->has_cocktails, $locationObject->has_wifi, $locationObject->has_togo, $locationObject->url, $locationObject->description, $locationObject->category, $locationObject->last_update, $locationObject->phone, $locationObject->is_smokers, $locationObject->is_nonsmokers, $locationObject->id);
+        $stmt->bind_param("issddiiiiisssssii", $this->mysql_table, $locationObject->is_active, $locationObject->name, $locationObject->address, $locationObject->price_beer, $locationObject->price_softdrink, $locationObject->has_food, $locationObject->has_beer, $locationObject->has_cocktails, $locationObject->has_wifi, $locationObject->has_togo, $locationObject->url, $locationObject->description, $locationObject->category, $locationObject->last_update, $locationObject->phone, $locationObject->is_smokers, $locationObject->is_nonsmokers, $locationObject->id);
         $result = $stmt->execute();
         if($stmt->error){
             printf("Error: %s.\n", $stmt->error);
@@ -101,6 +95,22 @@ class DB
 
     public function getAllLocations() {
         $query = "SELECT * FROM {$this->mysql_table};";
+        $result = $this->db->query($query);
+        if(!($result->num_rows > 0)) {
+            echo "No results to be shown!";
+            return false;
+        } else {
+            $locations = [];
+            while ($row = $result->fetch_assoc()) {
+                $locations[] = $row;
+            }
+            $result->free();
+            return $locations;
+        }
+    }
+
+    public function getActiveLocations() {
+        $query = "SELECT * FROM {$this->mysql_table} WHERE is_active = 1;";
         $result = $this->db->query($query);
         if(!($result->num_rows > 0)) {
             echo "No results to be shown!";

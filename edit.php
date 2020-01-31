@@ -7,8 +7,9 @@ $db = new DB();
 $loc = new locationObject();
 
 //  consume ID of location to be edited and fetch corresponding object
-$objectID = $_POST['id'];
+$objectID = base64_decode($_POST['id']);
 $locationObject = $db->getLocationById($objectID);
+var_dump($locationObject);
 
 $name = $locationObject['name'];
 $address = $locationObject['address'];
@@ -33,13 +34,22 @@ $category_bar = ($category == 'bar') ? 'selected' : '';
 $category_fastfood = ($category == 'fastfood') ? 'selected' : '';
 $category_restaurant = ($category == 'restaurant') ? 'selected' : '';
 $category_club = ($category == 'club') ? 'selected' : '';
-$checkbox_has_food = ($has_food) ? 'checked' : '';
-$checkbox_has_beer = ($has_beer) ? 'checked' : '';
-$checkbox_has_togo = ($has_togo) ? 'checked' : '';
-$checkbox_has_cocktails = ($has_cocktails) ? 'checked' : '';
-$checkbox_is_smokers = ($is_smokers) ? 'checked' : '';
-$checkbox_is_nonsmokers = ($is_nonsmokers) ? 'checked' : '';
-$checkbox_has_wifi = ($has_wifi) ? 'checked' : '';
+
+$radio_food_0 = ($has_food == 0) ? 'checked' : '';
+$radio_food_1 = ($has_food == 1) ? 'checked' : '';
+$radio_food_2 = ($has_food == 2) ? 'checked' : '';
+$radio_togo_0 = ($has_togo == 0) ? 'checked' : '';
+$radio_togo_1 = ($has_togo == 1) ? 'checked' : '';
+$radio_togo_2 = ($has_togo == 2) ? 'checked' : '';
+$radio_beer_0 = ($has_beer == 0) ? 'checked' : '';
+$radio_beer_1 = ($has_beer == 1) ? 'checked' : '';
+$radio_beer_2 = ($has_beer == 2) ? 'checked' : '';
+$radio_smokers_0 = ($is_smokers == 0) ? 'checked' : '';
+$radio_smokers_1 = ($is_smokers == 1) ? 'checked' : '';
+$radio_smokers_2 = ($is_smokers == 2) ? 'checked' : '';
+$radio_nonsmokers_0 = ($is_nonsmokers == 0) ? 'checked' : '';
+$radio_nonsmokers_1 = ($is_nonsmokers == 1) ? 'checked' : '';
+$radio_nonsmokers_2 = ($is_nonsmokers == 2) ? 'checked' : '';
 $checkbox_is_active = ($is_active) ? 'checked' : '';
 
 // fill form with pre-defined values from $locationObject
@@ -62,13 +72,52 @@ echo <<<EOL
         <p>Homepage-URL (falls vorhanden): <input type="text" name="url" value="$url"></p>
         <p>Telefonnummer (falls vorhanden): <input type="text" name="phone" value="$phone"></p>
         <div class="lefty">
-            <p>Gibt es Essen? <input type="checkbox" name="has_food" value="has_food" $checkbox_has_food></p>
-            <p>Kann man Essen zum Mitnehmen bestellen? <input type="checkbox" name="has_togo" value="has_togo" $checkbox_has_togo></p>
-            <p>Gibt es Bier? <input type="checkbox" name="has_beer" value="has_beer" $checkbox_has_beer></p>
-            <p>Gibt es Cocktails? <input type="checkbox" name="has_cocktails" value="has_cocktails" $checkbox_has_cocktails></p>
-            <p>Gibt es einen Raucherraum bzw. Raucherbereich? <input type="checkbox" name="is_smokers" value="is_smokers" $checkbox_is_smokers></p>
-            <p>Gibt es einen Nichtraucherbereich? <input type="checkbox" name="is_nonsmokers" value="is_nonsmokers" $checkbox_is_nonsmokers></p>
-            <p>Gibt es kostenloses WLAN? <input type="checkbox" name="has_wifi" value="has_wifi" $checkbox_has_wifi></p>
+            <!-- replace with Y/N/? for each choice -->
+            <table>
+                <td>&nbsp;</td><td>Ja</td><td>Nein</td><td>kA</td>
+            <tr>
+                <td>Gibt es Essen?</td>
+                <td><input type="radio" name="has_food" value="1"></td>
+                <td><input type="radio" name="has_food" value="0"></td>
+                <td><input type="radio" name="has_food" value="2"></td>
+            </tr>
+                <tr>
+                    <td>Kann man Essen zum Mitnehmen bestellen?</td>
+                    <td><input type="radio" name="has_togo" value="1"></td>
+                    <td><input type="radio" name="has_togo" value="0"></td>
+                    <td><input type="radio" name="has_togo" value="2"></td>
+                </tr>
+                <tr>
+                    <td>Gibt es Bier?</td>
+                    <td><input type="radio" name="has_beer" value="1"></td>
+                    <td><input type="radio" name="has_beer" value="0"></td>
+                    <td><input type="radio" name="has_beer" value="2"></td>
+                </tr>
+                <tr>
+                    <td>Gibt es Cocktails?</td>
+                    <td><input type="radio" name="has_beer" value="1"></td>
+                    <td><input type="radio" name="has_beer" value="0"></td>
+                    <td><input type="radio" name="has_beer" value="2"></td>
+                </tr>
+                <tr>
+                    <td>Gibt es einen Raucherraum bzw. Raucherbereich?</td>
+                    <td><input type="radio" name="is_smokers" value="1"></td>
+                    <td><input type="radio" name="is_smokers" value="0"></td>
+                    <td><input type="radio" name="is_smokers" value="2"></td>
+                </tr>
+                <tr>
+                    <td>Gibt es einen Nichtraucherbereich</td>
+                    <td><input type="radio" name="is_nonsmokers" value="1"></td>
+                    <td><input type="radio" name="is_nonsmokers" value="0"></td>
+                    <td><input type="radio" name="is_nonsmokers" value="2"></td>
+                </tr>
+                <tr>
+                    <td>Gibt es kostenloses WLAN?</td>
+                    <td><input type="radio" name="has_wifi" value="1"></td>
+                    <td><input type="radio" name="has_wifi" value="0"></td>
+                    <td><input type="radio" name="has_wifi" value="2"></td>
+                </tr>
+            </table>
         </div>
         <textarea name="description" cols="10" rows="5" form="editentry">$description</textarea>
             <p>Eintrag aktiv <input type="checkbox" name="is_active" value="is_active" $checkbox_is_active></p>

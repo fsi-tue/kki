@@ -38,7 +38,7 @@
 
           .lefty {
               text-align: left;
-              margin-left: 40%;
+              margin-left: 30%;
           }
 
           form textarea {
@@ -48,6 +48,25 @@
               margin-right: auto;
               min-height: auto;
           }
+
+          td {
+              padding: 5px;
+          }
+
+          tr:nth-child(even) {
+              background-color: #f2f2f2;
+          }
+
+          td i {
+              padding-left: 5px;
+              padding-right: 5px;
+              font-size: 1.1em;
+          }
+
+          .locationlist td {
+              text-align: center;
+          }
+
       </style>
     <meta charset="utf-8">
     <script src="https://kit.fontawesome.com/c9b9f55395.js" crossorigin="anonymous"></script>

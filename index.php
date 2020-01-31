@@ -8,17 +8,17 @@ try {
 
 // get all entries
 try {
-    $allLocations = $db->getAllLocations();
+    $allLocations = $db->getActiveLocations();
 } catch (Exception $e) {
     echo "Couldn't retrieve entries: {$e}";
     exit();
 }
 
-// show table and add edit/delete buttons
+// show table for active locations
 include('header.php');
-    echo "<table>";
+    echo "<table class='locationlist'>";
     echo "<tr>";
-    echo "<td>Name</td><td>Kategorie</td><td>Adresse</td><td>Bier(€)</td><td>Softdrink(€)</td><td>URL</td><td>Stand</td><td><i class=\"fas fa-utensils\"></i></td><td><i class=\"fas fa-beer\"></i></td><td><i class=\"fas fa-wifi\"></i></td><td><i class=\"fas fa-cocktail\"></i></td><td><i class=\"fas fa-shopping-bag\"></i></td><td><i class=\"fas fa-smoking\"></i></td><td><i class=\"fas fa-smoking-ban\"></i></td>";
+    echo "<td>Name</td><td>Kategorie</td><td>Adresse</td><td>Bier(€)</td><td>Softdrink(€)</td><td>URL</td><td>Stand</td><td><i class='fas fa-utensils'></i></td><td><i class='fas fa-beer'></i></td><td><i class='fas fa-wifi'></i></td><td><i class='fas fa-cocktail'></i></td><td><i class='fas fa-shopping-bag'></i></td><td><i class='fas fa-smoking'></i></td><td><i class='fas fa-smoking-ban'></i></td>";
     echo "</tr>";
     foreach ($allLocations as $item) {
         echo "<tr>";
@@ -29,40 +29,82 @@ include('header.php');
         echo "<td>{$item['price_softdrink']}</td>";
         echo "<td>{$item['url']}</td>";
         echo "<td>{$item['last_update']}</td>";
-        if($item['has_food']) {
-            echo "<td><i class=\"fas fa-check\"></i></td>";
-        } else {
-            echo "<td><i class=\"fas fa-times\"></i></td>";
+        switch ($item['has_food']) {
+            case 0:
+                echo "<td><i class='fas fa-times'></i></td>";
+                break;
+            case 1:
+                echo "<td><i class='fas fa-check'></i></td>";
+                break;
+            case 2:
+                echo "<td><i class='fas fa-question'></i></td>";
+                break;
         }
-        if($item['has_beer']) {
-            echo "<td><i class=\"fas fa-check\"></i></td>";
-        } else {
-            echo "<td><i class=\"fas fa-times\"></i></td>";
+        switch ($item['has_beer']) {
+            case 0:
+                echo "<td><i class='fas fa-times'></i></td>";
+                break;
+            case 1:
+                echo "<td><i class='fas fa-check'></i></td>";
+                break;
+            case 2:
+                echo "<td><i class='fas fa-question'></i></td>";
+                break;
         }
-        if($item['has_wifi']) {
-            echo "<td><i class=\"fas fa-check\"></i></td>";
-        } else {
-            echo "<td><i class=\"fas fa-times\"></i></td>";
+        switch ($item['has_wifi']) {
+            case 0:
+                echo "<td><i class='fas fa-times'></i></td>";
+                break;
+            case 1:
+                echo "<td><i class='fas fa-check'></i></td>";
+                break;
+            case 2:
+                echo "<td><i class='fas fa-question'></i></td>";
+                break;
         }
-        if($item['has_cocktails']) {
-            echo "<td><i class=\"fas fa-check\"></i></td>";
-        } else {
-            echo "<td><i class=\"fas fa-times\"></i></td>";
+        switch ($item['has_cocktails']) {
+            case 0:
+                echo "<td><i class='fas fa-times'></i></td>";
+                break;
+            case 1:
+                echo "<td><i class='fas fa-check'></i></td>";
+                break;
+            case 2:
+                echo "<td><i class='fas fa-question'></i></td>";
+                break;
         }
-        if($item['has_togo']) {
-            echo "<td><i class=\"fas fa-check\"></i></td>";
-        } else {
-            echo "<td><i class=\"fas fa-times\"></i></td>";
+        switch ($item['has_togo']) {
+            case 0:
+                echo "<td><i class='fas fa-times'></i></td>";
+                break;
+            case 1:
+                echo "<td><i class='fas fa-check'></i></td>";
+                break;
+            case 2:
+                echo "<td><i class='fas fa-question'></i></td>";
+                break;
         }
-        if($item['is_smokers']) {
-            echo "<td><i class=\"fas fa-check\"></i></td>";
-        } else {
-            echo "<td><i class=\"fas fa-times\"></i></td>";
+        switch ($item['is_smokers']) {
+            case 0:
+                echo "<td><i class='fas fa-times'></i></td>";
+                break;
+            case 1:
+                echo "<td><i class='fas fa-check'></i></td>";
+                break;
+            case 2:
+                echo "<td><i class='fas fa-question'></i></td>";
+                break;
         }
-        if($item['is_nonsmokers']) {
-            echo "<td><i class=\"fas fa-check\"></i></td>";
-        } else {
-            echo "<td><i class=\"fas fa-times\"></i></td>";
+        switch ($item['is_nonsmokers']) {
+            case 0:
+                echo "<td><i class='fas fa-times'></i></td>";
+                break;
+            case 1:
+                echo "<td><i class='fas fa-check'></i></td>";
+                break;
+            case 2:
+                echo "<td><i class='fas fa-question'></i></td>";
+                break;
         }
         echo "</tr>";
 }

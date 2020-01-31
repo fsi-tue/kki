@@ -4,7 +4,7 @@
     require_once('locationObject.php');
     ?>
 <div id="inputform">
-    <span>Falls du ein Feld nicht ausfüllen kannst (z.B. den Softdrink-Preis oder ob es WLAN gibt), ist dies nicht weiter tragisch. Lasse das Feld dann einfach leer.</span>
+    <span>Falls du ein Feld nicht ausfüllen kannst, ist dies nicht weiter tragisch. Lasse das Feld dann einfach leer.</span>
     <span>Bitte hab Verständnis dafür, dass dein Eintrag zuerst durch einen Moderator freigeschaltet werden muss.</span>
     <form name="newentry" action="create.php" method="POST">
         <p>Name der Location: <input type="text" name="name" required></p>
@@ -22,22 +22,51 @@
         <p>Telefonnummer (falls vorhanden): <input type="text" name="phone"></p>
         <div class="lefty">
             <!-- replace with Y/N/? for each choice -->
+            Du kannst die folgenden Fragen mit (Ja/Nein/weiß ich nicht) beantworten:
             <table>
                 <td>&nbsp;</td><td>Ja</td><td>Nein</td><td>kA</td>
             <tr>
-
-            <p>Gibt es Essen? <input type="checkbox" name="has_food" value="has_food"></p>
+                <td>Gibt es Essen?</td>
+                <td><input type="radio" name="has_food" value="1"></td>
+                <td><input type="radio" name="has_food" value="0"></td>
+                <td><input type="radio" name="has_food" value="2" checked></td>
             </tr>
                 <tr>
-            <p>Kann man Essen zum Mitnehmen bestellen? <input type="checkbox" name="has_togo" value="has_togo"></p>
+                    <td>Kann man Essen zum Mitnehmen bestellen?</td>
+                    <td><input type="radio" name="has_togo" value="1"></td>
+                    <td><input type="radio" name="has_togo" value="0"></td>
+                    <td><input type="radio" name="has_togo" value="2" checked></td>
                 </tr>
                 <tr>
-            <p>Gibt es Bier? <input type="checkbox" name="has_beer" value="has_beer"></p>
+                    <td>Gibt es Bier?</td>
+                    <td><input type="radio" name="has_beer" value="1"></td>
+                    <td><input type="radio" name="has_beer" value="0"></td>
+                    <td><input type="radio" name="has_beer" value="2" checked></td>
                 </tr>
-            <p>Gibt es Cocktails? <input type="checkbox" name="has_cocktails" value="has_cocktails"></p>
-            <p>Gibt es einen Raucherraum bzw. Raucherbereich? <input type="checkbox" name="is_smokers" value="is_smokers"></p>
-            <p>Gibt es einen Nichtraucherbereich? <input type="checkbox" name="is_nonsmokers" value="is_nonsmokers"></p>
-            <p>Gibt es kostenloses WLAN? <input type="checkbox" name="has_wifi" value="has_wifi"></p>
+                <tr>
+                    <td>Gibt es Cocktails?</td>
+                    <td><input type="radio" name="has_cocktails" value="1"></td>
+                    <td><input type="radio" name="has_cocktails" value="0"></td>
+                    <td><input type="radio" name="has_cocktails" value="2" checked></td>
+                </tr>
+                <tr>
+                    <td>Gibt es einen Raucherraum bzw. Raucherbereich?</td>
+                    <td><input type="radio" name="is_smokers" value="1"></td>
+                    <td><input type="radio" name="is_smokers" value="0"></td>
+                    <td><input type="radio" name="is_smokers" value="2" checked></td>
+                </tr>
+                <tr>
+                    <td>Gibt es einen Nichtraucherbereich</td>
+                    <td><input type="radio" name="is_nonsmokers" value="1"></td>
+                    <td><input type="radio" name="is_nonsmokers" value="0"></td>
+                    <td><input type="radio" name="is_nonsmokers" value="2" checked></td>
+                </tr>
+                <tr>
+                    <td>Gibt es kostenloses WLAN?</td>
+                    <td><input type="radio" name="has_wifi" value="1"></td>
+                    <td><input type="radio" name="has_wifi" value="0"></td>
+                    <td><input type="radio" name="has_wifi" value="2" checked></td>
+                </tr>
             </table>
         </div>
         <textarea name="description" cols="10" rows="5">Beschreibungstext...</textarea>
@@ -52,17 +81,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $db = new DB();
     $name = filter_var($_POST["name"], FILTER_SANITIZE_STRING);
     $address = filter_var($_POST["address"], FILTER_SANITIZE_STRING);
-    $price_beer = filter_var($_POST["price_beer"], FILTER_SANITIZE_NUMBER_FLOAT);
-    $price_softdrink = filter_var($_POST["price_softdrink"], FILTER_SANITIZE_NUMBER_FLOAT);
-    $url = filter_var($_POST["url"], FILTER_SANITIZE_STRING);
+    $price_beer = filter_var($_POST["price_beer"], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+    $price_softdrink = filter_var($_POST["price_softdrink"], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+    $url = filter_var($_POST["url"], FILTER_SANITIZE_URL);
     $phone = filter_var($_POST["phone"], FILTER_SANITIZE_STRING);
     $description = filter_var($_POST["description"], FILTER_SANITIZE_STRING);
-    //$has_food = filter_var($_POST["has_food"], FILTER_SANITIZE_STRING);
-    //$has_togo = filter_var($_POST["has_togo"], FILTER_SANITIZE_STRING);
-    //$has_beer = filter_var($_POST["has_beer"], FILTER_SANITIZE_STRING);
-    //$is_smokers = filter_var($_POST["is_smokers"], FILTER_SANITIZE_STRING);
-    //$is_nonsmokers = filter_var($_POST["is_nonsmokers"], FILTER_SANITIZE_STRING);
-    //$has_wifi = filter_var($_POST["has_wifi"], FILTER_SANITIZE_STRING);
 
     // handle the select field
     $category = filter_var($_POST["category"]);
@@ -71,21 +94,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $locationObject = new stdClass();
     $locationObject->name = $name;
     $locationObject->address = $address;
-    $locationObject->price_beer = $price_beer;
-    $locationObject->price_softdrink = $price_softdrink;
     $locationObject->url = $url;
     $locationObject->phone = $phone;
     $locationObject->description = $description;
     $locationObject->category = $category;
 
+    // handle input of numeric values different decimal delimiters are bullshit.
+    //$locationObject->price_beer = str_replace(',', '.', $price_beer);
+    //$locationObject->price_softdrink = str_replace(',', '.', $price_softdrink);
+    $locationObject->price_beer = $price_beer;
+    $locationObject->price_softdrink = $price_softdrink;
+
     // if a checkbox is checked client-side, its value field is submitted. If it wasn"t set, it isn"t submitted at all, hence the check if the value isset().
-    $locationObject->has_food = (isset($_POST["has_food"])) ? TRUE : FALSE;
-    $locationObject->has_beer = (isset($_POST["has_beer"])) ? TRUE : FALSE;
-    $locationObject->has_togo = (isset($_POST["has_togo"])) ? TRUE : FALSE;
-    $locationObject->has_cocktails = (isset($_POST["has_cocktails"])) ? TRUE : FALSE;
-    $locationObject->is_smokers = (isset($_POST["has_food"])) ? TRUE : FALSE;
-    $locationObject->is_nonsmokers = (isset($_POST["has_food"])) ? TRUE : FALSE;
-    $locationObject->has_wifi = (isset($_POST["has_wifi"])) ? TRUE : FALSE; // I regret nothing.
+    $locationObject->has_food = $_POST["has_food"];
+    $locationObject->has_beer = $_POST["has_beer"];
+    $locationObject->has_togo = $_POST["has_togo"];
+    $locationObject->has_cocktails = $_POST["has_cocktails"];
+    $locationObject->is_smokers = $_POST["has_food"];
+    $locationObject->is_nonsmokers = $_POST["has_food"];
+    $locationObject->has_wifi = $_POST["has_wifi"];
     $locationObject->last_update = date('Y-m-d'); // I hate SQL.
     $locationObject->is_active = FALSE;
     if ($db->insertLocation($locationObject)) {
