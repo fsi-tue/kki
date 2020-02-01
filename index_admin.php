@@ -120,13 +120,14 @@ foreach ($allLocations as $item) {
     echo "<form name='edit' method='POST' action='edit.php'>";
     echo "<input type='hidden' name='id' value='{$base}'>";
     echo "<input type='submit' value='Bearbeiten'>";
+    echo "</form>";
     echo "</td>";
     echo "<td>";
-    echo "<form name='modify' method='POST' action='delete.php'>";
+    echo "<form name='delete' method='POST' action='delete.php'>";
     echo "<input type='hidden' name='id' value='{$base}'>";
     echo "<input type='submit' value='Löschen'>";
+    echo "</form>";
     echo "</td>";
-
     echo "</tr>";
 }
 echo "</table>";

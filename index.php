@@ -7,10 +7,9 @@ try {
 }
 
 // get all entries
-try {
-    $allLocations = $db->getActiveLocations();
-} catch (Exception $e) {
-    echo "Couldn't retrieve entries: {$e}";
+
+if(!($allLocations = $db->getActiveLocations())){
+    echo "No active locations found in the database :(";
     exit();
 }
 

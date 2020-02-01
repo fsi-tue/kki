@@ -1,7 +1,6 @@
 <?php
     include("header.php");
     require_once('DB.php');
-    require_once('locationObject.php');
     ?>
 <div id="inputform">
     <span>Falls du ein Feld nicht ausfüllen kannst, ist dies nicht weiter tragisch. Lasse das Feld dann einfach leer.</span>
@@ -56,7 +55,7 @@
                     <td><input type="radio" name="is_smokers" value="2" checked></td>
                 </tr>
                 <tr>
-                    <td>Gibt es einen Nichtraucherbereich</td>
+                    <td>Gibt es einen Nichtraucherbereich?</td>
                     <td><input type="radio" name="is_nonsmokers" value="1"></td>
                     <td><input type="radio" name="is_nonsmokers" value="0"></td>
                     <td><input type="radio" name="is_nonsmokers" value="2" checked></td>
@@ -69,7 +68,7 @@
                 </tr>
             </table>
         </div>
-        <textarea name="description" cols="10" rows="5">Beschreibungstext...</textarea>
+        <textarea name="description" cols="10" rows="5" placeholder="Beschreibungstext der Location"></textarea>
         <input type="submit" value="Eintrag absenden">
     </form>
 </div>
@@ -99,22 +98,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $locationObject->description = $description;
     $locationObject->category = $category;
 
-    // handle input of numeric values different decimal delimiters are bullshit.
-    //$locationObject->price_beer = str_replace(',', '.', $price_beer);
-    //$locationObject->price_softdrink = str_replace(',', '.', $price_softdrink);
     $locationObject->price_beer = $price_beer;
     $locationObject->price_softdrink = $price_softdrink;
 
-    // if a checkbox is checked client-side, its value field is submitted. If it wasn"t set, it isn"t submitted at all, hence the check if the value isset().
+
     $locationObject->has_food = $_POST["has_food"];
     $locationObject->has_beer = $_POST["has_beer"];
     $locationObject->has_togo = $_POST["has_togo"];
     $locationObject->has_cocktails = $_POST["has_cocktails"];
-    $locationObject->is_smokers = $_POST["has_food"];
-    $locationObject->is_nonsmokers = $_POST["has_food"];
+    $locationObject->is_smokers = $_POST["is_smokers"];
+    $locationObject->is_nonsmokers = $_POST["is_nonsmokers"];
     $locationObject->has_wifi = $_POST["has_wifi"];
     $locationObject->last_update = date('Y-m-d'); // I hate SQL.
     $locationObject->is_active = FALSE;
+
     if ($db->insertLocation($locationObject)) {
         echo "<p class='success'>Dein Eintrag wurde erfolgreich eintragen und wird von einem Moderator geprüft.</p>";
     } else {

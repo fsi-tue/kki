@@ -28,30 +28,49 @@ class DB
     }
 
     public function getLocationById($id) {
-        $query = "SELECT is_active, name, address, price_beer, price_softdrink, has_food, has_beer, has_cocktails, has_wifi, has_togo, url, description, category, last_update, phone, is_smokers, is_nonsmokers FROM {$this->mysql_table} WHERE id = ?;";
+        $query = "SELECT id, is_active, name, address, price_beer, price_softdrink, url, phone, has_food, has_beer, has_wifi, has_cocktails, has_togo, is_smokers, is_nonsmokers, description, category, last_update FROM {$this->mysql_table} WHERE id = ?;";
         if(!$stmt = $this->db->prepare($query)) {
             echo "Prepare failed: (" . $this->db->errno . ") " . $this->db->error;
         }
         $stmt->bind_param("i", $id);
-        // use bind_result and create a new object with all the required fields
+        $stmt->execute();
+        // bind result to variables... thanks PHP developers.
+        $stmt->bind_result($id, $is_active, $name, $address, $price_beer, $price_softdrink, $url, $phone, $has_food, $has_beer, $has_wifi, $has_cocktails, $has_togo, $is_smokers, $is_nonsmokers, $description, $category, $last_update);
+        $stmt->fetch();
 
+        // create a new object with all the variables
+        $locationObject = new stdClass();
+        $locationObject->id = $id;
+        $locationObject->is_active = $is_active;
+        $locationObject->name = $name;
+        $locationObject->address = $address;
+        $locationObject->price_beer = $price_beer;
+        $locationObject->price_softdrink = $price_softdrink;
+        $locationObject->url = $url;
+        $locationObject->phone = $phone;
+        $locationObject->has_food = $has_food;
+        $locationObject->has_beer = $has_beer;
+        $locationObject->has_wifi = $has_wifi;
+        $locationObject->has_cocktails = $has_cocktails;
+        $locationObject->has_togo = $has_togo;
+        $locationObject->is_smokers = $is_smokers;
+        $locationObject->is_nonsmokers = $is_nonsmokers;
+        $locationObject->description = $description;
+        $locationObject->category = $category;
+        $locationObject->last_update = $last_update;
+        return $locationObject;
     }
 
     /**
      * enables the user to insert a new location into the database.
      * @param $locationObject: data of the location in PHP object format.
      */
-    public function insertLocation($locationObject) {
-        // set all fields that aren't set in the object to NULL for SQL
-        //foreach($locationObject as $key => $value) {
-        //    if(empty($value))
-        //        $value = NULL;
-        //}
-        $query = "INSERT INTO {$this->mysql_table} (is_active, name, address, price_beer, price_softdrink, has_food, has_beer, has_cocktails, has_wifi, has_togo, url, description, category, last_update, phone, is_smokers, is_nonsmokers) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+    public function insertLocation($obj) {
+        $query = "INSERT INTO {$this->mysql_table} (is_active, name, address, price_beer, price_softdrink, url, phone, has_food, has_beer, has_wifi, has_cocktails, has_togo, is_smokers, is_nonsmokers, description, catecory, last_update) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
         if(!$stmt = $this->db->prepare($query)) {
             echo "Prepare failed: (" . $this->db->errno . ") " . $this->db->error;
         }
-        $stmt->bind_param("issddiiiiisssssii", $locationObject->is_active, $locationObject->name, $locationObject->address, $locationObject->price_beer, $locationObject->price_softdrink, $locationObject->has_food, $locationObject->has_beer, $locationObject->has_cocktails, $locationObject->has_wifi, $locationObject->has_togo, $locationObject->url, $locationObject->description, $locationObject->category, $locationObject->last_update, $locationObject->phone, $locationObject->is_smokers, $locationObject->is_nonsmokers);
+        $stmt->bind_param("issddssiiiiiiisss", $obj->is_active, $obj->name, $obj->address, $obj->price_beer, $obj->price_softdrink, $obj->url, $obj->phone, $obj->has_food, $obj->has_beer, $obj->has_wifi, $obj->has_cocktails, $obj->has_togo, $obj->is_smokers, $obj->is_nonsmokers, $obj->description, $obj->category, $obj->last_update);
         $result = $stmt->execute();
         if($stmt->error){
             printf("Error: %s.\n", $stmt->error);
@@ -60,17 +79,13 @@ class DB
         return $result;
     }
 
-    public function alterLocation($locationObject) {
+    public function alterLocation($obj) {
         // set all fields that aren't set in the object to NULL for SQL
-        foreach($locationObject as $key => $value) {
-            if(empty($value))
-                $value = NULL;
-        }
-        $query = "UPDATE {$this->mysql_table} SET is_active = ?, name = ?, address = ?, price_beer = ?, price_softdrink = ?, has_food = ?, has_beer = ?, has_cocktails = ?, has_wifi = ?, has_togo = ?, url = ?, description = ?, category = ?, last_update = ?, phone = ?, is_smokers = ?, is_nonsmokers = ? WHERE id = ?;";
+        $query = "UPDATE {$this->mysql_table} SET is_active = ?, name = ?, address = ?, price_beer = ?, price_softdrink = ?, url = ?, phone = ?, has_food = ?, has_beer = ?, has_wifi = ?, has_cocktails = ?, has_togo = ?, is_smokers = ?, is_nonsmokers = ?, description = ?, category = ?, last_update = ? WHERE id = ?;";
         if(!$stmt = $this->db->prepare($query)) {
             echo "Prepare failed: (" . $this->db->errno . ") " . $this->db->error;
         }
-        $stmt->bind_param("issddiiiiisssssii", $this->mysql_table, $locationObject->is_active, $locationObject->name, $locationObject->address, $locationObject->price_beer, $locationObject->price_softdrink, $locationObject->has_food, $locationObject->has_beer, $locationObject->has_cocktails, $locationObject->has_wifi, $locationObject->has_togo, $locationObject->url, $locationObject->description, $locationObject->category, $locationObject->last_update, $locationObject->phone, $locationObject->is_smokers, $locationObject->is_nonsmokers, $locationObject->id);
+        $stmt->bind_param("issddssiiiiiiisssi", $obj->is_active, $obj->name, $obj->address, $obj->price_beer, $obj->price_softdrink, $obj->url, $obj->phone, $obj->has_food, $obj->has_beer, $obj->has_wifi, $obj->has_cocktails, $obj->has_togo, $obj->is_smokers, $obj->is_nonsmokers, $obj->description, $obj->category, $obj->last_update, $obj->id);
         $result = $stmt->execute();
         if($stmt->error){
             printf("Error: %s.\n", $stmt->error);
