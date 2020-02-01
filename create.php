@@ -87,7 +87,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $description = filter_var($_POST["description"], FILTER_SANITIZE_STRING);
 
     // handle the select field
-    $category = filter_var($_POST["category"]);
+    $category = filter_var($_POST["category"], FILTER_SANITIZE_STRING);
 
     // initialize new locationObject to be passed to the insert method and fill with POST data
     $locationObject = new stdClass();
@@ -100,7 +100,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $locationObject->price_beer = $price_beer;
     $locationObject->price_softdrink = $price_softdrink;
-
 
     $locationObject->has_food = $_POST["has_food"];
     $locationObject->has_beer = $_POST["has_beer"];

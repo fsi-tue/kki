@@ -67,7 +67,7 @@ echo <<<EOL
                 <option value="bar" $category_bar>Bar / Kneipe</option>
                 <option value="fastfood" $category_fastfood >Fastfood / Döner und Co.</option>
                 <option value="restaurant" $category_restaurant>Restaurant</option>
-                <option value="club" $category_bar>Club / Disco</option> <!-- disco disco party party! -->
+                <option value="club" $category_club>Club / Disco</option> <!-- disco disco party party! -->
             </select></p>
         <p>Preis für die Halbe (0,5l Export): <input type="number" name="price_beer" pattern="[0-9]+([\.,][0-9]+)?" step="0.01" value="$price_beer"></p>
         <p>Preis für großen Softdrink: <input type="number" name="price_softdrink" pattern="[0-9]+([\.,][0-9]+)?" step="0.01" value="$price_softdrink"></p>
