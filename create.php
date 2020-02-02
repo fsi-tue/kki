@@ -1,6 +1,11 @@
 <?php
     include("header.php");
     require_once('DB.php');
+    echo "<div id='message'>";
+    if(isset($msg)) {
+        echo $msg;
+    }
+    echo "</div>";
     ?>
 <div id="inputform">
     <span>Falls du ein Feld nicht ausfüllen kannst, ist dies nicht weiter tragisch. Lasse das Feld dann einfach leer.</span>
@@ -74,7 +79,6 @@
 <?php
 // consume POST data
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    var_dump($_POST);
     $db = new DB();
     $name = filter_var($_POST["name"], FILTER_SANITIZE_STRING);
     $address = filter_var($_POST["address"], FILTER_SANITIZE_STRING);
@@ -115,9 +119,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $locationObject->is_active = FALSE;
 
     if ($db->insertLocation($locationObject)) {
-        echo "<p class='success'>Dein Eintrag wurde erfolgreich eintragen und wird von einem Moderator geprüft.</p>";
+        $msg = "<p class='success'>Dein Eintrag wurde erfolgreich eintragen und wird von einem Moderator geprüft.</p>";
     } else {
-        echo "<p class='fail'>Eintragen in die Datenbank fehlgeschlagen!";
+        $msg = "<p class='fail'>Eintragen in die Datenbank fehlgeschlagen!";
     }
 }
 include("footer.php");

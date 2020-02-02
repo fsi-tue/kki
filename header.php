@@ -18,6 +18,33 @@
               border-radius: 5px;
           }
 
+          .blue {
+              padding: 5px;
+              font-size: 1em;
+              background-color: dodgerblue;
+              color: white;
+              border: 1px solid blue;
+              border-radius: 5px;
+          }
+
+          .red {
+              padding: 5px;
+              font-size: 1em;
+              background-color: indianred;
+              color: white;
+              border: 1px solid red;
+              border-radius: 5px;
+          }
+
+          .green {
+              padding: 5px;
+              font-size: 1em;
+              background-color: darkseagreen;
+              color: white;
+              border: 1px solid darkgreen;
+              border-radius: 5px;
+          }
+
           form > p {
               font-size: 1em;
               color: #666666;
@@ -56,6 +83,10 @@
 
           td {
               padding: 5px;
+          }
+
+          td input[type=submit] {
+              font-size: 0.8em;
           }
 
           tr:nth-child(even) {

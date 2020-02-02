@@ -119,20 +119,20 @@ foreach ($allLocations as $item) {
     $base = base64_encode($item['id']);
     echo "<form name='edit' method='POST' action='edit.php'>";
     echo "<input type='hidden' name='id' value='{$base}'>";
-    echo "<input type='submit' value='Bearbeiten'>";
+    echo "<input type='submit' class='blue' value='Bearbeiten'>";
     echo "</form>";
     echo "</td>";
     echo "<td>";
     echo "<form name='delete' method='POST' action='delete.php'>";
     echo "<input type='hidden' name='id' value='{$base}'>";
-    echo "<input type='submit' value='Löschen'>";
+    echo "<input type='submit' class='red' value='Löschen'>";
     echo "</form>";
     echo "</td>";
     echo "</tr>";
 }
 echo "</table>";
 echo "<div id='buttons'>";
-echo "<a href='create.php'><button type='button'>Neuen Eintrag anlegen</button></a> &nbsp; <a href='dump.php'><button type='button'>Export nach CSV</button></a>";
+echo "<a href='create.php'><button type='button' class='blue'>Neuen Eintrag anlegen</button></a> &nbsp; <a href='dump.php'><button type='button' class='green'>Export nach CSV</button></a>";
 echo "</div>";
 
 include('footer.php');
