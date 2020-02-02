@@ -2,6 +2,11 @@
 require_once('DB.php');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    /*
+     * initialize new DB opject and grab POST parameters given by the form.
+     * all fields where users can input strings of any kind are passed through filter_var() with appropriate settings
+     * for each field.
+     */
     $db = new DB();
     $id = base64_decode($_POST['id']);
     $name = filter_var($_POST["name"], FILTER_SANITIZE_STRING);
@@ -11,20 +16,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $url = filter_var($_POST["url"], FILTER_SANITIZE_URL);
     $phone = filter_var($_POST["phone"], FILTER_SANITIZE_STRING);
     $description = filter_var($_POST["description"], FILTER_SANITIZE_STRING);
-
     $is_smokers = filter_var($_POST["is_smokers"], FILTER_SANITIZE_STRING);
     $is_nonsmokers = filter_var($_POST["is_nonsmokers"], FILTER_SANITIZE_STRING);
     $has_wifi = filter_var($_POST["has_wifi"], FILTER_SANITIZE_STRING);
-
-    // handle the select field
     $category = filter_var($_POST["category"], FILTER_SANITIZE_STRING);
 
-    // handle wrong URLs (missing http(s))
+    /*
+     * If the user 'forgot' to put either http:// or https:// in front of the URL given inside $url,
+     * the string is prepended with https://.
+     */
     if(!(substr($url, 0, strlen('http')) === 'http')) {
         $url = 'https://' . $url;
     }
 
-    // initialize new locationObject to be passed to the insert method and fill with POST data
+    // initialize new locationObject to be passed to the insert method and fill with sanitized POST data
     $locationObject = new stdClass();
     $locationObject->id = $id;
     $locationObject->name = $name;
@@ -35,8 +40,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $locationObject->phone = $phone;
     $locationObject->description = $description;
     $locationObject->category = $category;
-
-    // if a checkbox is checked client-side, its value field is submitted. If it wasn"t set, it isn"t submitted at all, hence the check if the value isset().
     $locationObject->has_food = $_POST["has_food"];
     $locationObject->has_beer = $_POST["has_beer"];
     $locationObject->has_togo = $_POST["has_togo"];

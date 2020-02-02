@@ -27,6 +27,12 @@ include('header.php');
         echo "<td>{$item['price_beer']}</td>";
         echo "<td>{$item['price_softdrink']}</td>";
         echo "<td><a href='{$item['url']}'>{$item['url']}</a></td>";
+        /*
+         * For each of the pseudo-boolean fields, we have to check its value.
+         * 0: no ('times' symbol)
+         *  1: yes ('check' symbol)
+         *  2: unknown('?' symbol).
+         */
         switch ($item['has_food']) {
             case 0:
                 echo "<td><i class='fas fa-times'></i></td>";

@@ -3,11 +3,21 @@ require_once('DB.php');
 include("header.php");
 
 $db = new DB();
+/*
+ * Since I couldn't be bothered to use sessions just yet, the parameter 'id' needed to identify the database record
+ * is passed as a POST parameter. This file recieves the parameter as a Base64 encoded string (see index_admin.php),
+ * which is then decoded. I'm fully aware that this does not improve security in any way whatsoever.
+ */
 
 //  consume ID of location to be edited and fetch corresponding object
 $objectID = base64_decode($_POST['id']);
 $locationObject = new stdClass();
 $locationObject = $db->getLocationById($objectID);
+
+/*
+ * To fill in the values of the database record inside the form below, we have to put each individual object value
+ * inside a new variable. We can't access the object directly because of restrictions of the Heredoc format used.
+ */
 $name = $locationObject->name;
 $address = $locationObject->address;
 $price_beer = $locationObject->price_beer;
@@ -26,7 +36,14 @@ $last_update = $locationObject->last_update = date('Y-m-d'); // I hate SQL.
 $is_active = $locationObject->is_active;
 $category = $locationObject->category;
 
-// handling of select fields and checkboxes (beware, hacky af)
+/*
+ * (Pseudo-) Boolean values can't be displayed directly inside HTML.
+ * If a dropdown menu should display a specific option per default, this option has to have the attribute 'selected'
+ * added to it. The same principle applies to radio buttons with their 'checked' attribute.
+ * Hence we're creating a new variable for each and every selection and radio button. If the item is supposed
+ * to be selected, the variable outputs 'selected' or 'checked' depending on the type of HTML element.
+ * if it's not supposed to be selected, the variable outputs an empty string, which is ignored inside HTML.
+ */
 $category_bar = ($category == 'bar') ? 'selected' : '';
 $category_fastfood = ($category == 'fastfood') ? 'selected' : '';
 $category_restaurant = ($category == 'restaurant') ? 'selected' : '';
@@ -73,7 +90,6 @@ echo <<<EOL
         <p>Preis für großen Softdrink: <input type="number" name="price_softdrink" pattern="[0-9]+([\.,][0-9]+)?" step="0.01" value="$price_softdrink"></p>
         <p>Homepage-URL (falls vorhanden): <input type="text" name="url" value="$url"></p>
         <p>Telefonnummer (falls vorhanden): <input type="text" name="phone" value="$phone"></p>
-            <!-- replace with Y/N/? for each choice -->
             <table>
                 <td>&nbsp;</td><td>Ja</td><td>Nein</td><td>kA</td>
             <tr>

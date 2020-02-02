@@ -167,7 +167,7 @@ class DB
      * @param $filename
      * @param $delimiter
      */
-    public function dumpToCSV($filename, $delimiter) {
+    public function dumpToCSV($delimiter, $filename = null) {
         // adapted from: https://phppot.com/php/php-csv-file-export-using-fputcsv/
 
         // create temporary file for download
@@ -175,8 +175,13 @@ class DB
 
         // Set header row for CSV file
         $header = array('is_active', 'name', 'address', 'price_beer', 'price_softdrink', 'url', 'phone', 'has_food', 'has_beer', 'has_wifi', 'has_cocktails', 'has_togo', 'is_smokers', 'is_nonsmokers', 'description', 'category', 'last_update');
-        header('Content-type: application/csv');
-        header('Content-Disposition: attachment; filename=' . $filename);
+        if(isset($filename)) {
+            header('Content-Type: application/csv');
+            header('Content-Disposition: attachment; filename=' . $filename);
+        }
+        else {
+            header('Content-Type: text/plain');
+        }
         fputcsv($fp, $header, $delimiter);
 
         // query DB for all rows and dump below the header row

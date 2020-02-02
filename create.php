@@ -79,6 +79,11 @@
 <?php
 // consume POST data
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    /*
+     * initialize new DB opject and grab POST parameters given by the form.
+     * all fields where users can input strings of any kind are passed through filter_var() with appropriate settings
+     * for each field.
+     */
     $db = new DB();
     $name = filter_var($_POST["name"], FILTER_SANITIZE_STRING);
     $address = filter_var($_POST["address"], FILTER_SANITIZE_STRING);
@@ -87,11 +92,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $url = filter_var($_POST["url"], FILTER_SANITIZE_URL);
     $phone = filter_var($_POST["phone"], FILTER_SANITIZE_STRING);
     $description = filter_var($_POST["description"], FILTER_SANITIZE_STRING);
-
-    // handle the select field
     $category = filter_var($_POST["category"], FILTER_SANITIZE_STRING);
-
-    // handle wrong URLs (missing http(s))
+    /*
+     * If the user 'forgot' to put either http:// or https:// in front of the URL given inside $url,
+     * the string is prepended with https://.
+     */
     if(!(substr($url, 0, strlen('http')) === 'http')) {
         $url = 'https://' . $url;
     }
@@ -104,10 +109,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $locationObject->phone = $phone;
     $locationObject->description = $description;
     $locationObject->category = $category;
-
     $locationObject->price_beer = $price_beer;
     $locationObject->price_softdrink = $price_softdrink;
-
     $locationObject->has_food = $_POST["has_food"];
     $locationObject->has_beer = $_POST["has_beer"];
     $locationObject->has_togo = $_POST["has_togo"];
@@ -116,8 +119,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $locationObject->is_nonsmokers = $_POST["is_nonsmokers"];
     $locationObject->has_wifi = $_POST["has_wifi"];
     $locationObject->last_update = date('Y-m-d'); // I hate SQL.
+    /*
+     * If an entry is first submitted, it defaults to "not active" to avoid drunk vandalism of any sort.
+     * Entries have to be activated first (using edit.php) before they are shown inside index.php.
+     */
     $locationObject->is_active = FALSE;
-
+    // create a new record in the database using insertLocation
     if ($db->insertLocation($locationObject)) {
         $msg = "<p class='success'>Dein Eintrag wurde erfolgreich eintragen und wird von einem Moderator geprüft.</p>";
     } else {
