@@ -17,7 +17,7 @@ if(!($allLocations = $db->getActiveLocations())){
 include('header.php');
     echo "<table class='locationlist'>";
     echo "<tr>";
-    echo "<td>Name</td><td>Kategorie</td><td>Adresse</td><td>Bier(€)</td><td>Softdrink(€)</td><td>URL</td><td><i class='fas fa-utensils'></i></td><td><i class='fas fa-beer'></i></td><td><i class='fas fa-cocktail'></i></td><td><i class='fas fa-wifi'></i></td><td><i class='fas fa-shopping-bag'></i></td><td><i class='fas fa-smoking'></i></td><td><i class='fas fa-smoking-ban'></i></td>";
+    echo "<td>Name</td><td>Kategorie</td><td>Adresse</td><td>Bier(€)</td><td>Softdrink(€)</td><td>URL</td><td><i class='fas fa-utensils tooltip'><span class='tooltiptext'>Gibt es Essen?</span></i></td><td><i class='fas tooltip fa-beer'><span class='tooltiptext'>Gibt es Bier?</span></i></td><td><i class='fas tooltip fa-cocktail'><span class='tooltiptext'>Gibt es Cocktails?</span></i></td><td><i class='fas tooltip fa-wifi'><span class='tooltiptext'>Gibt es WLAN?</span></i></td><td><i class='fas tooltip fa-shopping-bag'><span class='tooltiptext'>Gibt es Essen to go?</span></i></td><td><i class='fas tooltip fa-smoking'><span class='tooltiptext'>Raucher?</span></i></td><td><i class='fas tooltip fa-smoking-ban'><span class='tooltiptext'>Nichtraucher?</span></i></td>";
     echo "</tr>";
     foreach ($allLocations as $item) {
         echo "<tr>";
