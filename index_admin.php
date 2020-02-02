@@ -132,7 +132,7 @@ foreach ($allLocations as $item) {
 }
 echo "</table>";
 echo "<div id='buttons'>";
-echo "<a href='create.php'><button type='button'>Neuen Eintrag anlegen</button></a>";
+echo "<a href='create.php'><button type='button'>Neuen Eintrag anlegen</button></a> &nbsp; <a href='dump.php'><button type='button'>Export nach CSV</button></a>";
 echo "</div>";
 
 include('footer.php');

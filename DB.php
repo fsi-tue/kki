@@ -27,6 +27,14 @@ class DB
         $this->db->close();
     }
 
+    public function getDumpDir() {
+        return $this->storagepath;
+    }
+
+    /**
+     * @param $id
+     * @return stdClass
+     */
     public function getLocationById($id) {
         $query = "SELECT id, is_active, name, address, price_beer, price_softdrink, url, phone, has_food, has_beer, has_wifi, has_cocktails, has_togo, is_smokers, is_nonsmokers, description, category, last_update FROM {$this->mysql_table} WHERE id = ?;";
         if(!$stmt = $this->db->prepare($query)) {
@@ -63,7 +71,8 @@ class DB
 
     /**
      * enables the user to insert a new location into the database.
-     * @param $locationObject: data of the location in PHP object format.
+     * @param $locationObject : data of the location in PHP object format.
+     * @return bool
      */
     public function insertLocation($obj) {
         $query = "INSERT INTO {$this->mysql_table} (is_active, name, address, price_beer, price_softdrink, url, phone, has_food, has_beer, has_wifi, has_cocktails, has_togo, is_smokers, is_nonsmokers, description, category, last_update) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
@@ -79,6 +88,10 @@ class DB
         return $result;
     }
 
+    /**
+     * @param $obj
+     * @return bool
+     */
     public function alterLocation($obj) {
         // set all fields that aren't set in the object to NULL for SQL
         $query = "UPDATE {$this->mysql_table} SET is_active = ?, name = ?, address = ?, price_beer = ?, price_softdrink = ?, url = ?, phone = ?, has_food = ?, has_beer = ?, has_wifi = ?, has_cocktails = ?, has_togo = ?, is_smokers = ?, is_nonsmokers = ?, description = ?, category = ?, last_update = ? WHERE id = ?;";
@@ -94,6 +107,10 @@ class DB
         return $result;
     }
 
+    /**
+     * @param $id
+     * @return bool
+     */
     public function deleteLocationById($id) {
         $query = "DELETE from {$this->mysql_table} WHERE ID = ?;";
         if(!$stmt = $this->db->prepare($query)) {
@@ -108,6 +125,9 @@ class DB
         return $result;
     }
 
+    /**
+     * @return array|bool
+     */
     public function getAllLocations() {
         $query = "SELECT * FROM {$this->mysql_table};";
         $result = $this->db->query($query);
@@ -124,6 +144,9 @@ class DB
         }
     }
 
+    /**
+     * @return array|bool
+     */
     public function getActiveLocations() {
         $query = "SELECT * FROM {$this->mysql_table} WHERE is_active = 1;";
         $result = $this->db->query($query);
@@ -141,35 +164,28 @@ class DB
     }
 
     /**
-     * @param $table
      * @param $filename
      * @param $delimiter
-     * @return bool
-     * @throws Exception
      */
     public function dumpToCSV($filename, $delimiter) {
-        $filepath = $this->storagepath . DIRECTORY_SEPARATOR . $filename;
-        $query = "TABLE {$this->mysql_table} ORDER BY asc INTO OUTFILE ? FIELDS TERMINATED BY ? OPTIONALLY ENCLOSED BY '\"', ESCAPED BY '\' LINES TERMINATED BY '\n';";
-        $stmt = $this->db->prepare($query);
-        $stmt->bind_param("ss", $filepath, $delimiter);
-        $result = $stmt->execute();
-        if($stmt->error){
-            printf("Error: %s.\n", $stmt->error);
+        // adapted from: https://phppot.com/php/php-csv-file-export-using-fputcsv/
+
+        // create temporary file for download
+        $fp = fopen('php://output', 'w');
+
+        // Set header row for CSV file
+        $header = array('is_active', 'name', 'address', 'price_beer', 'price_softdrink', 'url', 'phone', 'has_food', 'has_beer', 'has_wifi', 'has_cocktails', 'has_togo', 'is_smokers', 'is_nonsmokers', 'description', 'category', 'last_update');
+        header('Content-type: application/csv');
+        header('Content-Disposition: attachment; filename=' . $filename);
+        fputcsv($fp, $header, $delimiter);
+
+        // query DB for all rows and dump below the header row
+        $query = "SELECT is_active, name, address, price_beer, price_softdrink, url, phone, has_food, has_beer, has_wifi, has_cocktails, has_togo, is_smokers, is_nonsmokers, description, category, last_update FROM {$this->mysql_table};";
+        $result = mysqli_query($this->db, $query);
+        while ($row = mysqli_fetch_row($result)) {
+            fputcsv($fp, $row, $delimiter);
         }
-        $stmt->close();
-
-        // check if file was created successfully (surround call to function with try/catch)
-        if(!file_exists($filepath)) {
-            throw new Exception("file {$filename} does not exist in specified path.");
-        }
-        return true;
-    }
-
-    public function dumpToSQL($table, $filename, $delimiter) {
-        // stolen from https://www.php.net/manual/de/function.str-getcsv.php#117692
-        $filepath = $this->storagepath . DIRECTORY_SEPARATOR . $filename;
-        // This method clears the entire table to avoid doubled entries. Use with caution.
-
+        fclose($fp);
     }
 }
 
