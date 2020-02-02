@@ -13,6 +13,7 @@ $filename = "kki_locations.csv";
 if(!(isset($_GET['type']))) {
     try {
         $db->dumpToCSV('|');
+        exit();
     } catch (Exception $e) {
         echo "Dump nach CSV fehlgeschlagen: {$e}";
         exit();
@@ -22,6 +23,7 @@ if(!(isset($_GET['type']))) {
 if($_GET['type'] == 'file') {
     try {
         $db->dumpToCSV('|', $filename);
+        exit();
     } catch (Exception $e) {
         echo "Dump nach CSV fehlgeschlagen: {$e}";
         exit();
@@ -31,6 +33,7 @@ if($_GET['type'] == 'file') {
 if($_GET['type'] == 'echo') {
     try {
         $db->dumpToCSV('|');
+        exit();
     } catch (Exception $e) {
         echo "Dump nach CSV fehlgeschlagen: {$e}";
         exit();
