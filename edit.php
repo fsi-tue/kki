@@ -73,7 +73,6 @@ echo <<<EOL
         <p>Preis für großen Softdrink: <input type="number" name="price_softdrink" pattern="[0-9]+([\.,][0-9]+)?" step="0.01" value="$price_softdrink"></p>
         <p>Homepage-URL (falls vorhanden): <input type="text" name="url" value="$url"></p>
         <p>Telefonnummer (falls vorhanden): <input type="text" name="phone" value="$phone"></p>
-        <div class="lefty">
             <!-- replace with Y/N/? for each choice -->
             <table>
                 <td>&nbsp;</td><td>Ja</td><td>Nein</td><td>kA</td>
@@ -120,7 +119,6 @@ echo <<<EOL
                     <td><input type="radio" name="has_wifi" value="2" $radio_wifi_2></td>
                 </tr>
             </table>
-        </div>
         <textarea name="description" cols="10" rows="5">$description</textarea>
             <p>Eintrag aktiv <input type="checkbox" name="is_active" value="is_active" $checkbox_is_active></p>
 

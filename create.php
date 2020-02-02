@@ -19,7 +19,6 @@
         <p>Preis für großen Softdrink: <input type="number" name="price_softdrink" pattern="[0-9]+([\.,][0-9]+)?" step="0.01"></p>
         <p>Homepage-URL (falls vorhanden): <input type="text" name="url"></p>
         <p>Telefonnummer (falls vorhanden): <input type="text" name="phone"></p>
-        <div class="lefty">
             <!-- replace with Y/N/? for each choice -->
             Du kannst die folgenden Fragen mit (Ja/Nein/weiß ich nicht) beantworten:
             <table>
@@ -67,7 +66,6 @@
                     <td><input type="radio" name="has_wifi" value="2" checked></td>
                 </tr>
             </table>
-        </div>
         <textarea name="description" cols="10" rows="5" placeholder="Beschreibungstext der Location"></textarea>
         <input type="submit" value="Eintrag absenden">
     </form>

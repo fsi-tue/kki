@@ -1,5 +1,5 @@
 
-<div id="footer>"
-  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+<div id="footer">
+  <p>handmade with <i class="far fa-heart"></i> by <a href="https://github.com/elogy/">elogy</a> for <a href="https://github.com/fsi-tue/">fsi</a></p>
 </div>
 </body>

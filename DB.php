@@ -66,7 +66,7 @@ class DB
      * @param $locationObject: data of the location in PHP object format.
      */
     public function insertLocation($obj) {
-        $query = "INSERT INTO {$this->mysql_table} (is_active, name, address, price_beer, price_softdrink, url, phone, has_food, has_beer, has_wifi, has_cocktails, has_togo, is_smokers, is_nonsmokers, description, catecory, last_update) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+        $query = "INSERT INTO {$this->mysql_table} (is_active, name, address, price_beer, price_softdrink, url, phone, has_food, has_beer, has_wifi, has_cocktails, has_togo, is_smokers, is_nonsmokers, description, category, last_update) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
         if(!$stmt = $this->db->prepare($query)) {
             echo "Prepare failed: (" . $this->db->errno . ") " . $this->db->error;
         }

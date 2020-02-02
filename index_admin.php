@@ -20,7 +20,7 @@ try {
 include('header.php');
 echo "<table class='locationlist'>";
 echo "<tr>";
-echo "<td>aktiv?</td><td>Name</td><td>Kategorie</td><td>Adresse</td><td>Bier(€)</td><td>Softdrink(€)</td><td>URL</td><td>Stand</td><td><i class='fas fa-utensils'></i></td><td><i class='fas fa-beer'></i></td><td><i class='fas fa-wifi'></i></td><td><i class='fas fa-cocktail'></i></td><td><i class='fas fa-shopping-bag'></i></td><td><i class='fas fa-smoking'></i></td><td><i class='fas fa-smoking-ban'></i></td><td>Edit</td><td>Delete</td>";
+echo "<td>aktiv?</td><td>Name</td><td>Kategorie</td><td>Adresse</td><td>Bier&nbsp;(€)</td><td>Softdrink&nbsp;(€)</td><td>URL</td><td>Stand</td><td><i class='fas fa-utensils'></i></td><td><i class='fas fa-beer'></i></td><td><i class='fas fa-cocktail'></i></td><td><i class='fas fa-wifi'></i></td><td><i class='fas fa-shopping-bag'></i></td><td><i class='fas fa-smoking'></i></td><td><i class='fas fa-smoking-ban'></i></td><td>Edit</td><td>Delete</td>";
 echo "</tr>";
 foreach ($allLocations as $item) {
     echo "<tr>";
@@ -35,7 +35,7 @@ foreach ($allLocations as $item) {
     echo "<td>{$item['address']}</td>";
     echo "<td>{$item['price_beer']}</td>";
     echo "<td>{$item['price_softdrink']}</td>";
-    echo "<td>{$item['url']}</td>";
+    echo "<td><a href='{$item['url']}'>{$item['url']}</a></td>";
     echo "<td>{$item['last_update']}</td>";
     switch ($item['has_food']) {
         case 0:
@@ -59,7 +59,7 @@ foreach ($allLocations as $item) {
             echo "<td><i class='fas fa-question'></i></td>";
             break;
     }
-    switch ($item['has_wifi']) {
+    switch ($item['has_cocktails']) {
         case 0:
             echo "<td><i class='fas fa-times'></i></td>";
             break;
@@ -70,7 +70,7 @@ foreach ($allLocations as $item) {
             echo "<td><i class='fas fa-question'></i></td>";
             break;
     }
-    switch ($item['has_cocktails']) {
+    switch ($item['has_wifi']) {
         case 0:
             echo "<td><i class='fas fa-times'></i></td>";
             break;

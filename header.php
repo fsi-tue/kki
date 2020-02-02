@@ -4,8 +4,9 @@
       <style>
           body {
               font-family: sans-serif;
-              background-color: #dddddd;
+              background-color: #888888;
           }
+
           #inputform {
               text-align: center;
               margin-left: auto;
@@ -38,7 +39,8 @@
 
           .lefty {
               text-align: left;
-              margin-left: 30%;
+              width: 100%;
+              padding-left: 33%;
           }
 
           form textarea {
@@ -47,6 +49,8 @@
               margin-left: auto;
               margin-right: auto;
               min-height: auto;
+              margin-top: 10px;
+              margin-bottom: 10px;
           }
 
           td {
@@ -63,8 +67,56 @@
               font-size: 1.1em;
           }
 
+          .locationlist {
+              margin-left: auto;
+              margin-right: auto;
+              margin-top: 15px;
+              margin-bottom: 15px;
+          }
+
+          #footer {
+              margin-top: 10px;
+              text-align: center;
+          }
+
+          #footer p {
+              color: #ffffff;
+          }
+
+          #footer a {
+              color: #333333;
+              text-decoration: none;
+              font-weight: bolder;
+          }
+
           .locationlist td {
               text-align: center;
+          }
+
+          #logo {
+              background-image: url("kki_small.png");
+              background-size: contain;
+              background-repeat: no-repeat;
+              background-position: center;
+              width: 30%;
+              margin-left: auto;
+              margin-right: auto;
+              height: 100px;
+          }
+
+          h2 {
+              text-align: center;
+              color: white;
+          }
+
+          h2 a {
+              text-decoration: none;
+              color: #ffffff;
+          }
+
+          form table {
+              margin-left: auto;
+              margin-right: auto;
           }
 
       </style>
@@ -73,4 +125,5 @@
     <title>Kneipen- und Kulturinterface</title>
   </head>
   <body>
-  
+  <div id="logo"><a href="index.php">&nbsp;</a></div>
+  <h2><a href="index.php">Kneipen- und Kulturinterface</a></h2>
