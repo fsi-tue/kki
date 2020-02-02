@@ -87,6 +87,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // handle the select field
     $category = filter_var($_POST["category"], FILTER_SANITIZE_STRING);
 
+    // handle wrong URLs (missing http(s))
+    if(!(substr($url, 0, strlen('http')) === 'http')) {
+        $url = 'https://' . $url;
+    }
+
     // initialize new locationObject to be passed to the insert method and fill with POST data
     $locationObject = new stdClass();
     $locationObject->name = $name;

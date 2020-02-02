@@ -3,6 +3,7 @@
   <head>
       <style>
           body {
+              margin-top: 10px;
               font-family: sans-serif;
               background-color: #888888;
           }
@@ -68,10 +69,13 @@
           }
 
           .locationlist {
+              padding: 15px;
+              border-radius: 10px;
               margin-left: auto;
               margin-right: auto;
               margin-top: 15px;
               margin-bottom: 15px;
+              background-color: #ffffff;
           }
 
           #footer {
@@ -89,8 +93,13 @@
               font-weight: bolder;
           }
 
+          .locationlist tr:first-child td {
+              font-weight: bold;
+          }
+
           .locationlist td {
               text-align: center;
+              padding: 6px;
           }
 
           #logo {
@@ -117,6 +126,13 @@
           form table {
               margin-left: auto;
               margin-right: auto;
+          }
+
+          #buttons {
+              margin-left: auto;
+              margin-right: auto;
+              margin-top: 10px;
+              text-align: center;
           }
 
       </style>

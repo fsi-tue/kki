@@ -99,7 +99,7 @@ class DB
         if(!$stmt = $this->db->prepare($query)) {
             echo "Prepare failed: (" . $this->db->errno . ") " . $this->db->error;
         }
-        $stmt->bind_param("ss", $this->mysql_table, $id);
+        $stmt->bind_param("i", $id);
         $result = $stmt->execute();
         if($stmt->error){
             printf("Error: %s.\n", $stmt->error);

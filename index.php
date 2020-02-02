@@ -17,7 +17,7 @@ if(!($allLocations = $db->getActiveLocations())){
 include('header.php');
     echo "<table class='locationlist'>";
     echo "<tr>";
-    echo "<td>Name</td><td>Kategorie</td><td>Adresse</td><td>Bier(€)</td><td>Softdrink(€)</td><td>URL</td><td>Stand</td><td><i class='fas fa-utensils'></i></td><td><i class='fas fa-beer'></i></td><td><i class='fas fa-cocktail'></i></td><td><i class='fas fa-wifi'></i></td><td><i class='fas fa-shopping-bag'></i></td><td><i class='fas fa-smoking'></i></td><td><i class='fas fa-smoking-ban'></i></td>";
+    echo "<td>Name</td><td>Kategorie</td><td>Adresse</td><td>Bier(€)</td><td>Softdrink(€)</td><td>URL</td><td><i class='fas fa-utensils'></i></td><td><i class='fas fa-beer'></i></td><td><i class='fas fa-cocktail'></i></td><td><i class='fas fa-wifi'></i></td><td><i class='fas fa-shopping-bag'></i></td><td><i class='fas fa-smoking'></i></td><td><i class='fas fa-smoking-ban'></i></td>";
     echo "</tr>";
     foreach ($allLocations as $item) {
         echo "<tr>";
@@ -27,7 +27,6 @@ include('header.php');
         echo "<td>{$item['price_beer']}</td>";
         echo "<td>{$item['price_softdrink']}</td>";
         echo "<td><a href='{$item['url']}'>{$item['url']}</a></td>";
-        echo "<td>{$item['last_update']}</td>";
         switch ($item['has_food']) {
             case 0:
                 echo "<td><i class='fas fa-times'></i></td>";
