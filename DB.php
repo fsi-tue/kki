@@ -188,7 +188,8 @@ class DB
         $query = "SELECT is_active, name, address, price_beer, price_softdrink, url, phone, has_food, has_beer, has_wifi, has_cocktails, has_togo, is_smokers, is_nonsmokers, description, category, last_update FROM {$this->mysql_table};";
         $result = mysqli_query($this->db, $query);
         while ($row = mysqli_fetch_row($result)) {
-            fputcsv($fp, $row, $delimiter);
+            // we will replace the delimiter inside the row with the escaped version of it.
+            fputcsv($fp, (str_replace($delimiter, '', $row )), $delimiter);
         }
         fclose($fp);
     }

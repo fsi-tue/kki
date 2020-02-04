@@ -30,9 +30,9 @@
           .red {
               padding: 5px;
               font-size: 1em;
-              background-color: indianred;
+              background-color: red;
               color: white;
-              border: 1px solid red;
+              border: 1px solid darkred;
               border-radius: 5px;
           }
 
@@ -144,6 +144,11 @@
               height: 100px;
           }
 
+          body > a {
+              /* link for logo */
+              text-decoration: none;
+          }
+
           h2 {
               text-align: center;
               color: white;
@@ -210,5 +215,5 @@
     <title>Kneipen- und Kulturinterface</title>
   </head>
   <body>
-  <div id="logo"><a href="index.php">&nbsp;</a></div>
+  <a href="index.php"><div id="logo">&nbsp;</div></a>
   <h2><a href="index.php">Kneipen- und Kulturinterface</a></h2>
