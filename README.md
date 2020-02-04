@@ -7,6 +7,7 @@ Items can be fully modified prior to activation or deleted.
 ## Installation
 Clone the entire repository and upload the contents to a PHP-enabled directory of your choice.
 Then, enter the credentials to MariaDB inside the file credentials.in in the following format:
+
 ```ini
 [db]
 mysql_user=<mysql-username>
@@ -19,6 +20,29 @@ mysql_table=<table-name>
 To create the database schema, navigate your browser to the file `_initdb.php`.
 
 All activated items are shown in a table in `index.php`. New entries can be created with `create.php` or by clicking the button "Neuen Eintrag anlagen".
+
+## Creation
+The information for a location can be entered via a simple form. The user can supply the following information:
+- name of the location
+- address
+- category (bar, fast food, restaurant, club/disco)
+- price for a "Halbe"
+- price for a large softdrink
+- URL
+- phone number
+- a short description of the location
+
+Additionally, the user can answer the following questions with (yes/no/don't know):
+- Is there food on the menu?
+- Is there a takeaway option?
+- Is beer on the menu?
+- Are cocktails on the menu?
+- Is there a room for smokers? 
+- Is there a room for non-smokers?
+- Is there free wifi?
+
+These fields are shown as small icons and marked with either "✔", "×" or "?".
+
 
 ## Administration
 To review new entries supplied by users or to edit details of a specific location, navigate your browser to `index_admin.php`. Here you can view all entries as well as edit and delete specific entries.
