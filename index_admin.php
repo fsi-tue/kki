@@ -18,10 +18,13 @@ try {
 
 // show table and add edit/delete buttons
 include('header.php');
-echo "<table class='locationlist'>";
+echo "<table class='locationlist sortierbar'>";
+echo "<thead>";
 echo "<tr>";
-echo "<td>aktiv?</td><td>Name</td><td>Kategorie</td><td>Adresse</td><td>Bier(€)</td><td>Softdrink(€)</td><td>URL</td><td>Stand</td><td><i class='fas fa-utensils tooltip'><span class='tooltiptext'>Gibt es Essen?</span></i></td><td><i class='fas tooltip fa-beer'><span class='tooltiptext'>Gibt es Bier?</span></i></td><td><i class='fas tooltip fa-cocktail'><span class='tooltiptext'>Gibt es Cocktails?</span></i></td><td><i class='fas tooltip fa-wifi'><span class='tooltiptext'>Gibt es WLAN?</span></i></td><td><i class='fas tooltip fa-shopping-bag'><span class='tooltiptext'>Gibt es Essen to go?</span></i></td><td><i class='fas tooltip fa-smoking'><span class='tooltiptext'>Raucher?</span></i></td><td><i class='fas tooltip fa-smoking-ban'><span class='tooltiptext'>Nichtraucher?</span></i></td>";
+echo "<th class='sortierbar'>aktiv?<span></span></th><th class='sortierbar'>Name<span></span></th><th class='sortierbar'>Kategorie<span></span></th><th>Adresse<span></span></th><th class='sortierbar'>Bier (€)<span></span></th><th class='sortierbar'>Softdrink (€)<span></span></th><th>URL</th><th class='sortierbar'>Stand<span></span></th><th class='sortierbar'><i class='fas fa-utensils tooltip'><span class='tooltiptext'>Gibt es Essen?</span></i></th><th class='sortierbar'><i class='fas tooltip fa-beer'><span class='tooltiptext'>Gibt es Bier?</span></i></th><th class='sortierbar'><i class='fas tooltip fa-cocktail'><span class='tooltiptext'>Gibt es Cocktails?</span></i></th><th class='sortierbar'><i class='fas tooltip fa-wifi'><span class='tooltiptext'>Gibt es WLAN?</span></i></th><th class='sortierbar'><i class='fas tooltip fa-shopping-bag'><span class='tooltiptext'>Gibt es Essen to go?</span></i></th><th class='sortierbar'><i class='fas tooltip fa-smoking'><span class='tooltiptext'>Raucher?</span></i></th><th class='sortierbar'><i class='fas tooltip fa-smoking-ban'><span class='tooltiptext'>Nichtraucher?</span></i></th><th>Edit</th><th>Löschen</th>";
 echo "</tr>";
+echo "</thead>";
+echo "<tbody>";
 foreach ($allLocations as $item) {
     echo "<tr>";
     if($item['is_active'] == 1) {
@@ -131,6 +134,7 @@ foreach ($allLocations as $item) {
     echo "</td>";
     echo "</tr>";
 }
+echo "</tbody>";
 echo "</table>";
 echo "<div id='buttons'>";
 echo "<a href='create.php'><button type='button' class='blue'>Neuen Eintrag anlegen</button></a> &nbsp; <a href='dump.php'><button type='button' class='green'>Export nach CSV</button></a>";

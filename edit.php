@@ -11,7 +11,6 @@ $db = new DB();
 
 //  consume ID of location to be edited and fetch corresponding object
 $objectID = base64_decode($_POST['id']);
-$locationObject = new stdClass();
 $locationObject = $db->getLocationById($objectID);
 
 /*
