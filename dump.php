@@ -15,6 +15,7 @@ if(!(isset($_GET['type']))) {
         $db->dumpToCSV('|');
         exit();
     } catch (Exception $e) {
+        include('header.php');
         echo "Dump nach CSV fehlgeschlagen: {$e}";
         exit();
     }
@@ -25,6 +26,7 @@ if($_GET['type'] == 'file') {
         $db->dumpToCSV('|', $filename);
         exit();
     } catch (Exception $e) {
+        include('header.php');
         echo "Dump nach CSV fehlgeschlagen: {$e}";
         exit();
     }
@@ -35,6 +37,7 @@ if($_GET['type'] == 'echo') {
         $db->dumpToCSV('|');
         exit();
     } catch (Exception $e) {
+        include('header.php');
         echo "Dump nach CSV fehlgeschlagen: {$e}";
         exit();
     }

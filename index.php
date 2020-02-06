@@ -1,20 +1,22 @@
 <?php
 require_once('DB.php');
+include('header.php');
 try {
     $db = new DB();
 } catch(Exception $e) {
-    echo "Couldn't create DB instance: {$e}";
+    echo "<div id='message'><p class='fail'>Couldn't create DB instance: {$e}</p></div>";
+    exit();
 }
 
 // get all entries
 
 if(!($allLocations = $db->getActiveLocations())){
-    echo "No active locations found in the database :(";
+    echo "<div id='message'><p class='fail'>No active locations found in the database :( <a href='create.php'>Create one?</a></p></div>";
     exit();
 }
 
 // show table for active locations
-include('header.php');
+
     echo "<table class='locationlist'>";
     echo "<tr>";
     echo "<td>Name</td><td>Kategorie</td><td>Adresse</td><td>Bier(€)</td><td>Softdrink(€)</td><td>URL</td><td><i class='fas fa-utensils tooltip'><span class='tooltiptext'>Gibt es Essen?</span></i></td><td><i class='fas tooltip fa-beer'><span class='tooltiptext'>Gibt es Bier?</span></i></td><td><i class='fas tooltip fa-cocktail'><span class='tooltiptext'>Gibt es Cocktails?</span></i></td><td><i class='fas tooltip fa-wifi'><span class='tooltiptext'>Gibt es WLAN?</span></i></td><td><i class='fas tooltip fa-shopping-bag'><span class='tooltiptext'>Gibt es Essen to go?</span></i></td><td><i class='fas tooltip fa-smoking'><span class='tooltiptext'>Raucher?</span></i></td><td><i class='fas tooltip fa-smoking-ban'><span class='tooltiptext'>Nichtraucher?</span></i></td>";

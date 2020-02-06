@@ -92,7 +92,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
      * If the user 'forgot' to put either http:// or https:// in front of the URL given inside $url,
      * the string is prepended with https://.
      */
-    if(!(substr($url, 0, strlen('http')) === 'http')) {
+    if(isset($url) && (!(substr($url, 0, strlen('http')) === 'http'))) {
         $url = 'https://' . $url;
     }
 

@@ -51,9 +51,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $locationObject->is_active = (isset($_POST["is_active"])) ? TRUE : FALSE;
     try {
         $db->alterLocation($locationObject);
-        echo "<div id='message'><p class='success'>Änderungen wurden erfolgreich eingetragen.</p></div>";
+        echo "<div id='message'><p class='success'>Änderungen wurden erfolgreich eingetragen.</p><br><a href='index_admin.php'>zurück zur Übersicht</a></div>";
     } catch (Exception $e) {
-        echo "<div id='message'><p class='fail'>Eintragen in die Datenbank fehlgeschlagen!<br>{$e}</p></div>";
+        echo "<div id='message'><p class='fail'>Eintragen in die Datenbank fehlgeschlagen!</p><br><a href='index_admin.php'>zurück zur Übersicht</a></div>";
     }
 } else {
     exit();

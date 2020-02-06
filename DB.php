@@ -132,7 +132,6 @@ class DB
         $query = "SELECT * FROM {$this->mysql_table};";
         $result = $this->db->query($query);
         if(!($result->num_rows > 0)) {
-            echo "No results to be shown!";
             return false;
         } else {
             $locations = [];
@@ -151,7 +150,6 @@ class DB
         $query = "SELECT * FROM {$this->mysql_table} WHERE is_active = 1;";
         $result = $this->db->query($query);
         if(!($result->num_rows > 0)) {
-            echo "No results to be shown!";
             return false;
         } else {
             $locations = [];
@@ -185,7 +183,7 @@ class DB
         fputcsv($fp, $header, $delimiter);
 
         // query DB for all rows and dump below the header row
-        $query = "SELECT is_active, name, address, price_beer, price_softdrink, url, phone, has_food, has_beer, has_wifi, has_cocktails, has_togo, is_smokers, is_nonsmokers, description, category, last_update FROM {$this->mysql_table};";
+        $query = "SELECT is_active, name, address, price_beer, price_softdrink, url, phone, has_food, has_beer, has_wifi, has_cocktails, has_togo, is_smokers, is_nonsmokers, description, category, last_update FROM {$this->mysql_table} WHERE is_active = TRUE;";
         $result = mysqli_query($this->db, $query);
         while ($row = mysqli_fetch_row($result)) {
             // we will replace the delimiter inside the row with the escaped version of it.
