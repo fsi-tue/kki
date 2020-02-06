@@ -24,6 +24,7 @@ if(!($allLocations = $db->getActiveLocations())){
     foreach ($allLocations as $item) {
         echo "<tr>";
         echo "<td>{$item['name']}</td>";
+        $item['category'] = ucfirst($item['category']);
         echo "<td>{$item['category']}</td>";
         echo "<td>{$item['address']}</td>";
         echo "<td>{$item['price_beer']}</td>";

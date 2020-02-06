@@ -31,6 +31,7 @@ foreach ($allLocations as $item) {
         echo "<td><i class='fas fa-times'></i></td>";
     }
     echo "<td>{$item['name']}</td>";
+    $item['category'] = ucfirst($item['category']);
     echo "<td>{$item['category']}</td>";
     echo "<td>{$item['address']}</td>";
     echo "<td>{$item['price_beer']}</td>";
