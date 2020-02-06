@@ -81,12 +81,16 @@
               margin-bottom: 10px;
           }
 
-          td {
+          td,th {
               padding: 5px;
           }
 
           td input[type=submit] {
               font-size: 0.8em;
+          }
+
+          th {
+              background-color: #f2f2f2;
           }
 
           tr:nth-child(even) {
@@ -124,8 +128,10 @@
               font-weight: bolder;
           }
 
-          .locationlist tr:first-child td {
+          .locationlist th {
               font-weight: bold;
+              text-align: center;
+              padding: 6px;
           }
 
           .locationlist td {
@@ -234,6 +240,7 @@
       </style>
     <meta charset="utf-8">
     <script src="https://kit.fontawesome.com/c9b9f55395.js" crossorigin="anonymous"></script>
+      <script src="TableSort.js"></script>
     <title>Kneipen- und Kulturinterface</title>
   </head>
   <body>

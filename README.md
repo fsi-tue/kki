@@ -63,3 +63,7 @@ $db->dumpToCSV('|', $filename); // change `|` to the delimiter you want to use
 This project explicitly is a *work in progress*. Issues that still need to be adressed:
 - Access control to `index_admin.php, dump.php, delete.php, edit.php`, maybe using PHP sessions
 - Encapsulate handling of POST parameters to avoid code duplications inside `create.php` and `store.php`
+
+## Acknowledgements
+The sorting function uses [TableSort.js by Jürgen Berkheimer](https://www.j-berkemeier.de/TableSort.html), released under CC BY-SA 4.0.
+
