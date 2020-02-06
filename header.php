@@ -209,6 +209,28 @@
               font-size: 0.8em;
           }
 
+          #message {
+              position: absolute;
+              top: 110px;
+              left: 25%;
+              width: 50%;
+              text-align: center;
+          }
+
+          .success {
+              padding: 10px;
+              background-color: darkseagreen;
+              border: 1px solid darkgreen;
+              border-radius: 5px;
+          }
+
+          .fail {
+              padding: 10px;
+              background-color: indianred;
+              border: 1px solid darkred;
+              border-radius: 5px;
+          }
+
       </style>
     <meta charset="utf-8">
     <script src="https://kit.fontawesome.com/c9b9f55395.js" crossorigin="anonymous"></script>

@@ -6,9 +6,9 @@ $db = new DB();
 
 $objectID = base64_decode($_POST['id']);
 if($db->deleteLocationById($objectID)) {
-    echo "Eintrag erfolgreich gelöscht.\n";
+    echo "<div id='message'><p class='success'>Eintrag erfolgreich gelöscht.</p></div>";
 } else {
-    echo "Löschen fehlgeschlagen. :(\n";
+    echo "<div id='message'><p class='fail'>Löschen fehlgeschlagen.</p></div>";
 }
 
 echo "<a href='index_admin.php'>Zurück zur Übersicht</a>";

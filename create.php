@@ -1,12 +1,8 @@
 <?php
     include("header.php");
     require_once('DB.php');
-    echo "<div id='message'>";
-    if(isset($msg)) {
-        echo $msg;
-    }
-    echo "</div>";
-    ?>
+
+echo <<<EOL
 <div id="inputform">
     <span>Falls du ein Feld nicht ausfüllen kannst, ist dies nicht weiter tragisch. Lasse das Feld dann einfach leer.</span>
     <span>Bitte hab Verständnis dafür, dass dein Eintrag zuerst durch einen Moderator freigeschaltet werden muss.</span>
@@ -75,8 +71,7 @@
         <input type="submit" value="Eintrag absenden">
     </form>
 </div>
-
-<?php
+EOL;
 // consume POST data
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     /*
@@ -126,9 +121,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $locationObject->is_active = FALSE;
     // create a new record in the database using insertLocation
     if ($db->insertLocation($locationObject)) {
-        $msg = "<p class='success'>Dein Eintrag wurde erfolgreich eintragen und wird von einem Moderator geprüft.</p>";
+        echo "<div id='message'><p class='success'>Dein Eintrag wurde erfolgreich eintragen und wird von einem Moderator geprüft.</p></div>";
     } else {
-        $msg = "<p class='fail'>Eintragen in die Datenbank fehlgeschlagen!";
+        echo "<div id='message'><p class='fail'>Eintragen in die Datenbank fehlgeschlagen!</p></div>";
     }
 }
 include("footer.php");

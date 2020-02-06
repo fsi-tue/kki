@@ -1,6 +1,6 @@
 <?php
 require_once('DB.php');
-
+include('header.php');
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     /*
      * initialize new DB opject and grab POST parameters given by the form.
@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
      * If the user 'forgot' to put either http:// or https:// in front of the URL given inside $url,
      * the string is prepended with https://.
      */
-    if(!(substr($url, 0, strlen('http')) === 'http')) {
+    if(isset($url) && (!(substr($url, 0, strlen('http')) === 'http'))) {
         $url = 'https://' . $url;
     }
 
@@ -51,9 +51,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $locationObject->is_active = (isset($_POST["is_active"])) ? TRUE : FALSE;
     try {
         $db->alterLocation($locationObject);
-        echo "<p class='success'>Änderungen wurden erfolgreich eingetragen.</p>";
+        echo "<div id='message'><p class='success'>Änderungen wurden erfolgreich eingetragen.</p></div>";
     } catch (Exception $e) {
-        echo "<p class='fail'>Eintragen in die Datenbank fehlgeschlagen!", $e;
+        echo "<div id='message'><p class='fail'>Eintragen in die Datenbank fehlgeschlagen!<br>{$e}</p></div>";
     }
 } else {
     exit();
