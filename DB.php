@@ -5,6 +5,7 @@ class DB
     protected $db;
     protected $mysql_table;
     protected $storagepath;
+    protected $pwhash;
 
     public function __construct() {
         $credentials = parse_ini_file("credentials.ini");
@@ -20,7 +21,7 @@ class DB
             throw new Exception("Couldn't connect to database! \n", mysqli_connect_error());
         }
         $this->mysql_table = $mysql_table;
-        $this->storagepath = $storagepath;
+        $this->pwhash = $backend;
     }
 
     public function __destruct() {
@@ -29,6 +30,10 @@ class DB
 
     public function getDumpDir() {
         return $this->storagepath;
+    }
+
+    public function getHash() {
+        return $this->pwhash;
     }
 
     /**

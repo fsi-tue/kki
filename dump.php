@@ -6,6 +6,7 @@
  * If dump.php is called either without a GET parameter or with ?type=echo, the output is done as plain text.
  * If dump.php is called with ?type=file, the output stream is piped into a file which is downloaded by the browser.
  */
+
 require_once('DB.php');
 $db = new DB();
 $filename = "kki_locations.csv";

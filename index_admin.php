@@ -1,6 +1,6 @@
 <?php
 require_once('DB.php');
-
+session_start();
 
 try {
     $db = new DB();
@@ -15,9 +15,18 @@ try {
     echo "Couldn't retrieve entries: {$e}";
     exit();
 }
-
-// show table and add edit/delete buttons
 include('header.php');
+
+// check if the user is logged in
+if(!isset($_SESSION['userid'])) {
+    echo "<div id='message'><p class='fail'>Bitte zuerst <a href='login.php'>einloggen!</a></p></div>";
+    exit();
+}
+if(isset($_SESSION['userid']) && ($_SESSION['userid'] != 'f0a8ed5d51a3229f154450fa55dac748')) {
+    echo "<div id='message'><p class='fail'>Netter Versuch!</a></p></div>";
+    exit();
+}
+
 echo "<table class='locationlist sortierbar'>";
 echo "<thead>";
 echo "<tr>";
@@ -137,7 +146,7 @@ foreach ($allLocations as $item) {
 echo "</tbody>";
 echo "</table>";
 echo "<div id='buttons'>";
-echo "<a href='create.php'><button type='button' class='blue'>Neuen Eintrag anlegen</button></a> &nbsp; <a href='dump.php'><button type='button' class='green'>Export nach CSV</button></a>";
+echo "<a href='create.php'><button type='button' class='blue'>Neuen Eintrag anlegen</button></a> &nbsp; <a href='dump.php'><button type='button' class='green'>Export nach CSV</button></a>&nbsp; <a href='logout.php'><button type='button' class='red'>Logout</button></a>";
 echo "</div>";
 
 include('footer.php');

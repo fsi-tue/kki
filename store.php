@@ -1,6 +1,19 @@
 <?php
+session_start();
+
 require_once('DB.php');
 include('header.php');
+
+// check if the user is logged in
+if(!isset($_SESSION['userid'])) {
+    echo "<div id='message'><p class='fail'>Bitte zuerst <a href='login.php'>einloggen!</a></p></div>";
+    exit();
+}
+if(isset($_SESSION['userid']) && ($_SESSION['userid'] != 'f0a8ed5d51a3229f154450fa55dac748')) {
+    echo "<div id='message'><p class='fail'>Netter Versuch!</a></p></div>";
+    exit();
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     /*
      * initialize new DB opject and grab POST parameters given by the form.
