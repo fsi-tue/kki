@@ -17,10 +17,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
-<div class="locationlist">
+<div class="locationlist" id="inputform">
 <form action="?login=1" method="post">
     Dein Passwort:<br>
     <input type="password" size="40"  maxlength="250" name="passwort"><br>
-    <input type="submit" value="Abschicken">
+    <input type="submit" class='green' value="Abschicken">
 </form>
 </div>

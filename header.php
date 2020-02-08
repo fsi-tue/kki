@@ -237,6 +237,19 @@
               border-radius: 5px;
           }
 
+          #login {
+              color: #ffffff;
+              position: absolute;
+              top: 0;
+              right: 0;
+              padding: 10px;
+              text-align: right;
+          }
+          #login a {
+              text-decoration: none;
+              color: white;
+          }
+
       </style>
     <meta charset="utf-8">
     <script src="https://kit.fontawesome.com/c9b9f55395.js" crossorigin="anonymous"></script>

@@ -16,7 +16,7 @@ if(!($allLocations = $db->getActiveLocations())){
 }
 
 // show table for active locations
-
+    echo "<div id='login'><a href='login.php'>Login</a></div>";
     echo "<table class='locationlist sortierbar'>";
     echo "<thead>";
     echo "<tr>";
