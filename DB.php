@@ -177,7 +177,7 @@ class DB
         $fp = fopen('php://output', 'w');
 
         // Set header row for CSV file
-        $header = array('is_active', 'name', 'address', 'price_beer', 'price_softdrink', 'url', 'phone', 'has_food', 'has_beer', 'has_wifi', 'has_cocktails', 'has_togo', 'is_smokers', 'is_nonsmokers', 'description', 'category', 'last_update');
+        $header = array('name', 'address', 'price_beer', 'price_softdrink', 'url', 'phone', 'has_food', 'has_beer', 'has_wifi', 'has_cocktails', 'has_togo', 'is_smokers', 'is_nonsmokers', 'description', 'category', 'last_update');
         if(isset($filename)) {
             header('Content-Type: application/csv');
             header('Content-Disposition: attachment; filename=' . $filename);
@@ -188,11 +188,11 @@ class DB
         fputcsv($fp, $header, $delimiter);
 
         // query DB for all rows and dump below the header row
-        $query = "SELECT is_active, name, address, price_beer, price_softdrink, url, phone, has_food, has_beer, has_wifi, has_cocktails, has_togo, is_smokers, is_nonsmokers, description, category, last_update FROM {$this->mysql_table} WHERE is_active = TRUE;";
+        $query = "SELECT name, address, price_beer, price_softdrink, url, phone, has_food, has_beer, has_wifi, has_cocktails, has_togo, is_smokers, is_nonsmokers, description, category, last_update FROM {$this->mysql_table} WHERE is_active = TRUE;";
         $result = mysqli_query($this->db, $query);
         while ($row = mysqli_fetch_row($result)) {
             // we will replace the delimiter inside the row with the escaped version of it.
-            fputcsv($fp, (str_replace($delimiter, '', $row )), $delimiter);
+            fputcsv($fp, (str_replace($delimiter, '', $row )), $delimiter, ' ');
         }
         fclose($fp);
     }
