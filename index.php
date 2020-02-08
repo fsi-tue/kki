@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once('DB.php');
 include('header.php');
 try {
@@ -16,7 +17,12 @@ if(!($allLocations = $db->getActiveLocations())){
 }
 
 // show table for active locations
-    echo "<div id='login'><a href='login.php'>Login</a></div>";
+    if(!isset($_SESSION['userid'])) {
+        echo "<div id='login'><a href='login.php'>Login</a></div>";
+    }
+    if(isset($_SESSION['userid']) && ($_SESSION['userid'] = 'f0a8ed5d51a3229f154450fa55dac748')) {
+        echo "<div id='login'><a href='index_admin.php'><button type='button' class='green'>Verwaltung</button></a>&nbsp;<a href='logout.php'><button type='button' class='red'>Logout</button></a></div>";
+    }
     echo "<table class='locationlist sortierbar'>";
     echo "<thead>";
     echo "<tr>";
