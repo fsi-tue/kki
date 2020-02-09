@@ -1,6 +1,15 @@
 <?php
-    include("header.php");
-    require_once('DB.php');
+/**
+ * This file displays an HTML form in which users can supply new entries to the database.
+ * If the file is called via GET, it displays the form. If it's called via POST, it records the POST
+ * data passed via the form and each form field is turned into an attribute for a new LocationObject based on stdClass().
+ * This locationObject is then inserted into the DB using insertLocation().
+ *
+ * Entries supplied via this form default to "not active" for moderation purposes and have to be set active
+ * via the admin backend (index_admin.php).
+ */
+include("header.php");
+require_once('DB.php');
 
 echo <<<EOL
 <div id="inputform">

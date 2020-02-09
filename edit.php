@@ -1,4 +1,12 @@
 <?php
+/**
+ * If the user is logged in, this file displays a pre-filled form for editing and activating a single database entry.
+ * The file consumes a Base64-encoded version of the entry ID, fetches the locationObject with the appropriate ID,
+ * unpacks its values and fills in the information into the HTML form fields.
+ * If the form is submitted, its values are passed as POST parameters to store.php.
+ *
+ * If the user is not logged in, the file displays an error message and exits.
+ */
 session_start();
 require_once('DB.php');
 include("header.php");
@@ -53,6 +61,7 @@ $category = $locationObject->category;
  * Hence we're creating a new variable for each and every selection and radio button. If the item is supposed
  * to be selected, the variable outputs 'selected' or 'checked' depending on the type of HTML element.
  * if it's not supposed to be selected, the variable outputs an empty string, which is ignored inside HTML.
+ * I'm fully aware that this is hacky beyond belief, but there is no other way using pure HTML and PHP.
  */
 $category_bar = ($category == 'bar') ? 'selected' : '';
 $category_fastfood = ($category == 'fastfood') ? 'selected' : '';

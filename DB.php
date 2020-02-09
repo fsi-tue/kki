@@ -1,10 +1,16 @@
 <?php
 
+/**
+ * Class DB
+ *
+ * This class provides access to the database using public functions.
+ * Inside the constructor, the file 'credentials.ini' and the content is passed into variables.
+ * All database statements, if possible, use $this->mysql_table to make this whole thing a bit more portable.
+ */
 class DB
 {
     protected $db;
     protected $mysql_table;
-    protected $storagepath;
     protected $pwhash;
 
     public function __construct() {
@@ -24,21 +30,28 @@ class DB
         $this->pwhash = $backend;
     }
 
+    /**
+     * Closes the database connection.
+     */
     public function __destruct() {
+
         $this->db->close();
     }
 
-    public function getDumpDir() {
-        return $this->storagepath;
-    }
-
+    /**
+     * returns the password hash given inside 'credentials.ini'
+     */
     public function getHash() {
+
         return $this->pwhash;
     }
 
     /**
-     * @param $id
-     * @return stdClass
+     * Consumes the id of a database entry, selects all the fields and binds them to variables.
+     * This is done via bind_result() since get_result() is not available on all platforms.
+     * The variables are piped into a locationObject (using stdClass) and returned.
+     * @param $id the id of the database row
+     * @return stdClass the information packed into an object
      */
     public function getLocationById($id) {
         $query = "SELECT id, is_active, name, address, price_beer, price_softdrink, url, phone, has_food, has_beer, has_wifi, has_cocktails, has_togo, is_smokers, is_nonsmokers, description, category, last_update FROM {$this->mysql_table} WHERE id = ?;";
@@ -77,7 +90,7 @@ class DB
     /**
      * enables the user to insert a new location into the database.
      * @param $locationObject : data of the location in PHP object format.
-     * @return bool
+     * @return bool was the insert statement successful?
      */
     public function insertLocation($obj) {
         $query = "INSERT INTO {$this->mysql_table} (is_active, name, address, price_beer, price_softdrink, url, phone, has_food, has_beer, has_wifi, has_cocktails, has_togo, is_smokers, is_nonsmokers, description, category, last_update) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
@@ -94,8 +107,9 @@ class DB
     }
 
     /**
-     * @param $obj
-     * @return bool
+     * Updates all fields of a given entry to new values passed from the locationObject.
+     * @param $obj the locationObject with updated information
+     * @return bool was the update statement successful?
      */
     public function alterLocation($obj) {
         // set all fields that aren't set in the object to NULL for SQL
@@ -113,8 +127,9 @@ class DB
     }
 
     /**
-     * @param $id
-     * @return bool
+     * Deletes a row from the database with a given ID.
+     * @param $id the row ID
+     * @return bool was the statement successful?
      */
     public function deleteLocationById($id) {
         $query = "DELETE from {$this->mysql_table} WHERE ID = ?;";
@@ -131,6 +146,9 @@ class DB
     }
 
     /**
+     * Fetches all entries from the table and returns them as an array.
+     * The associative array from fetch_assoc() is transformed into a regular array
+     * to simplify iteration when displaying the contents as HTML tables.
      * @return array|bool
      */
     public function getAllLocations() {
@@ -149,6 +167,9 @@ class DB
     }
 
     /**
+     * Fetches all entries from the table which have the "is_active" column set to 1 and returns them as an array.
+     * The associative array from fetch_assoc() is transformed into a regular array to simplify iteration
+     * when displaying the contents as HTML tables.
      * @return array|bool
      */
     public function getActiveLocations() {
@@ -167,8 +188,13 @@ class DB
     }
 
     /**
-     * @param $filename
-     * @param $delimiter
+     * Dumps all entries which have the column 'is_active' set to 1 into CSV format.
+     * A PHP file handle is created for output. To display the header row, an array with all
+     * column names is created and written to the file handle using fputcsv.
+     * If the method is called with a filename parameter (see 'dump.php'), the output is set to
+     * attachment format so the browser is forced into a download. Otherwise, the output is set to plain text.
+     * @param $filename additional filename (which is given to the downloaded file only)
+     * @param $delimiter CSV delimiter (see 'dump.php')
      */
     public function dumpToCSV($delimiter, $filename = null) {
         // adapted from: https://phppot.com/php/php-csv-file-export-using-fputcsv/
@@ -191,7 +217,9 @@ class DB
         $query = "SELECT name, address, price_beer, price_softdrink, url, phone, has_food, has_beer, has_wifi, has_cocktails, has_togo, is_smokers, is_nonsmokers, description, category, last_update FROM {$this->mysql_table} WHERE is_active = TRUE;";
         $result = mysqli_query($this->db, $query);
         while ($row = mysqli_fetch_row($result)) {
-            // we will replace the delimiter inside the row with the escaped version of it.
+            // we will replace the delimiter inside the row with an empty string to avoid complications with CSV export.
+            // additionally, the enclosure of strings with spaces in them is set to an empty string. This is purely
+            // because of parsing reasons inside of LaTeX.
             fputcsv($fp, (str_replace($delimiter, '', $row )), $delimiter, ' ');
         }
         fclose($fp);

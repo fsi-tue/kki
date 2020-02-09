@@ -1,4 +1,13 @@
 <?php
+/**
+ * This file displays a simple password field which enables users to access the administrative features.
+ * The password hash is grabbed from the file 'credentials.ini' using getHash() and matched against the user input
+ * using PHP's built-in password_verify(). If the password is correct, the 'userid' field inside the PHP
+ * $_SESSION superglobal is set to an MD5 hash (which has nothing to do with the password supplied,
+ * for anyone wondering. It's just an arbitrary choice).
+ *
+ * Each of the administrative functions starts the PHP session and checks for this value to be present.
+ */
 session_start();
 include('header.php');
 require_once('DB.php');

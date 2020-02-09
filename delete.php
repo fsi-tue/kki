@@ -1,4 +1,10 @@
 <?php
+/**
+ * If the user is logged in, this file consumes a Base64-encoded version of the entry ID and deletes said entry
+ * using deleteLocationById(). If deleting fails, it displays an error message.
+ *
+ * If the user is not logged in, the file displays an error message and exits.
+ */
 session_start();
 require_once('DB.php');
 include("header.php");

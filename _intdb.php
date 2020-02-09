@@ -1,4 +1,11 @@
 <?php
+/**
+ * This file parses the database credentials given inside 'credentials.ini', creates a connection to the database
+ * using mysqli and creates a table named 'kki_locations' if it doesn't exist already.
+ * This file only has to be called once under normal circumstances and can safely be deleted once the table is created.
+ *
+ * The fields 'has_*' and 'is_*' default to the value 2, which corresponds to 'don't know' (see 'create.php').
+ */
 $credentials = parse_ini_file("credentials.ini");
 /**
  * @var string $mysql_server

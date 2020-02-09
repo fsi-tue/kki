@@ -1,4 +1,12 @@
 <?php
+/**
+ * This file displays active locations the database using getActiveLocations().
+ * Text values are displayed directly, the URL field (if given) is turned into a clickable link.
+ * Each of the pseudo-boolean fields is encoded by either a check mark (value 1),
+ * an X mark (value 0) or a question mark (value 2).
+ *
+ * This file uses TableSort.js by Jürgen Berkheimer, released under CC BY-SA 4.0.
+ */
 session_start();
 require_once('DB.php');
 include('header.php');

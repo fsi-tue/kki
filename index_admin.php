@@ -1,4 +1,13 @@
 <?php
+/**
+ * This file displays all entries in the database using getAllLocations().
+ * Once logged in, The user has the ability to edit or delete entries,
+ * this is done by transferring a Base64-encoded version of the entry ID
+ * as a POST parameter to edit.php or delete.php, respectively.
+ * If the user is not logged in, the file displays an error message and exits.
+ *
+ * This file uses TableSort.js by Jürgen Berkheimer, released under CC BY-SA 4.0.
+ */
 require_once('DB.php');
 session_start();
 

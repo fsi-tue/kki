@@ -1,4 +1,13 @@
 <?php
+/**
+ * This file consumes POST parameters sent by edit.php (i.e. when an entry is edited from the admin backend).
+ * If the user is logged in, the POST data is recorded, sanitized using appropriate filter_var() configurations,
+ * turned into a new Location object (using stdClass()) and then passed to alterLocation().
+ * If altering the entry was successful, the user is greeted with a success message. If it wasn't, an error
+ * message is displayed instead.
+ *
+ * If the user is not logged in, the file displays an error message and exits.
+ */
 session_start();
 
 require_once('DB.php');
