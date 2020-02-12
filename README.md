@@ -4,6 +4,8 @@ This PHP script uses an SQL-based RDBMS like MariaDB to manage bars, restaurants
 New items can be supplied by users and have to be activated by an admin or moderator before they are displayed.
 Items can be fully modified prior to activation or deleted.
 
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+
 ## Installation
 Clone the entire repository and upload the contents to a PHP-enabled directory of your choice.
 Then, enter the credentials to MariaDB inside the file credentials.in in the following format:
