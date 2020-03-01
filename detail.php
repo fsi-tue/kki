@@ -153,7 +153,10 @@ switch ($has_wifi) {
         break;
 }
 
-echo "<p>Location auf der Karte</p>";
+echo "<span>Beschreibungstext</span>";
+echo "<p>" . $description . "</p>";
+
+echo "<span>Location auf der Karte</span>";
 // OSM API lookup
 // set a recognized HTTP header (debug stuff)
 ini_set('user_agent','Mozilla/4.0 (compatible; MSIE 6.0)');
