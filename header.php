@@ -18,6 +18,29 @@
               border-radius: 5px;
           }
 
+          #detail {
+              text-align: center;
+              margin-left: auto;
+              margin-right: auto;
+              max-width: 80%;
+              padding: 10px;
+              background-color: #ffffff;
+              border-radius: 5px;
+          }
+
+
+          #detail span {
+              display: block;
+              font-size: 0.9em;
+              color: #666666;
+          }
+
+          #detail p {
+              margin-top: 3px;
+              margin-bottom: 20px;
+              padding: 3px;
+          }
+
           .blue {
               padding: 5px;
               font-size: 1em;
@@ -250,10 +273,23 @@
               color: white;
           }
 
+          #mapwrapper {
+              margin-left:auto;
+              margin-right: auto;
+              width: 90%;
+              height: 500px;
+          }
+
+          #mapdiv {
+              width: 100%;
+              height: 100%;
+          }
+
       </style>
     <meta charset="utf-8">
     <script src="https://kit.fontawesome.com/c9b9f55395.js" crossorigin="anonymous"></script>
-      <script src="TableSort.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.11/lib/OpenLayers.js"></script>
+    <script src="TableSort.js"></script>
     <title>Kneipen- und Kulturinterface</title>
   </head>
   <body>

@@ -40,7 +40,8 @@ if(!($allLocations = $db->getActiveLocations())){
     echo "<tbody>";
     foreach ($allLocations as $item) {
         echo "<tr>";
-        echo "<td>{$item['name']}</td>";
+        echo "<td><a href='detail.php?id={$item['id']}'>{$item['name']}</a></td>";
+        // Uppercase the first character of the category field for human-readability
         $item['category'] = ucfirst($item['category']);
         echo "<td>{$item['category']}</td>";
         echo "<td>{$item['address']}</td>";
