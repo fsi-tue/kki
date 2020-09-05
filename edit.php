@@ -131,7 +131,7 @@ echo <<<EOL
                 </tr>
                 <tr>
                     <td>Gibt es Cocktails?</td>
-                    <td><input type="radio" name="has_cocktails" value="1" $radio_cocktails_1</td>
+                    <td><input type="radio" name="has_cocktails" value="1" $radio_cocktails_1></td>
                     <td><input type="radio" name="has_cocktails" value="0" $radio_cocktails_0></td>
                     <td><input type="radio" name="has_cocktails" value="2" $radio_cocktails_2></td>
                 </tr>
