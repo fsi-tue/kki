@@ -8,6 +8,11 @@
               background-color: #888888;
           }
 
+          /* display FontAwesome Icons above the hidden numeric value inside the tables */
+          td .fas {
+              margin-left: -1ex;
+          }
+
           #inputform {
               text-align: center;
               margin-left: auto;
@@ -283,6 +288,10 @@
           #mapdiv {
               width: 100%;
               height: 100%;
+          }
+
+          .hidden {
+              visibility: hidden;
           }
 
       </style>

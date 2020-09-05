@@ -1,4 +1,4 @@
-// TableSort 10.3 vom 27. 1. 2020
+// TableSort 10.6 vom 5. 9. 2020
 // Jürgen Berkemeier
 // www.j-berkemeier.de
 // Das Script steht unter des Lizenz: CC BY-SA 4.0 (Namensnennung - Weitergabe unter gleichen Bedingungen 4.0 International)
@@ -6,10 +6,12 @@
 (function() {
 	
 	"use strict";
+	
+	console.info("TableSort 10.6 vom 5. 9. 2020");
 
-	var JB_tableSort = function(tab,startsort) {
+	const JB_tableSort = function(tab,startsort) {
 		
-		var initTableHead = function(col) { // Kopfzeile vorbereiten
+		const initTableHead = function(col) { // Kopfzeile vorbereiten
 			if(tabletitel[col].className.indexOf("sortier")==-1) {
 				return false;
 			}
@@ -19,14 +21,14 @@
 			else if(tabletitel[col].className.indexOf("sortierbar")>-1) {
 				firstsort[col] = "asc";
 			}
-			var sortbutton = document.createElement("button");
+			const sortbutton = document.createElement("button");
 			sortbutton.innerHTML = "<span class='visually-hidden'>" + sort_hint.asc + "</span>" + "<span class='visually-hidden'>" + sort_hint.desc + "</span>" + tabletitel[col].innerHTML;
 			sortbutton.className = "sortbutton";
 			sortbutton.type = "button";
-			var sortsymbol = null;
-			var symbolspan = sortbutton.querySelectorAll("span");
+			let sortsymbol = null;
+			const symbolspan = sortbutton.querySelectorAll("span");
 			if(symbolspan && symbolspan.length) {
-				for(var i=0;i<symbolspan.length;i++) {
+				for(let i=0;i<symbolspan.length;i++) {
 					if(!symbolspan[i].hasChildNodes()) { 
 						sortsymbol = symbolspan[i];
 						break;
@@ -38,6 +40,7 @@
 				sortbutton.appendChild(sortsymbol);
 			}
 			sortsymbol.classList.add("sortsymbol");
+			sortsymbol.innerHTML = sortsymbol_svg;
 			if(tabletitel[col].className.indexOf("vorsortiert-")>-1) {
 				sortbutton.classList.add("sorteddesc");
 				sorted = col;
@@ -65,12 +68,12 @@
 		} // initTableHead
 
 		// Bereich prüfen
-		var between = function(num,min,max) {	
+		const between = function(num,min,max) {	
 			return ( num >= min && num <= max );
 		} // between
 			
 		// Datum trimmen
-		var trmdat = function(dmy) { 
+		const trmdat = function(dmy) { 
 			if(dmy[0]<10) dmy[0] = "0" + dmy[0];
 			if(dmy[1]<10) dmy[1] = "0" + dmy[1];
 			if(dmy[2]<10) dmy[2] = "200" + dmy[2];
@@ -80,20 +83,25 @@
 			return dmy;
 		} // trmdat
 		
-		var getData = function (ele, col) {
-			var dmy,val,tval,dp;
-			
+		// Tabellenzellen auslesen
+		const getData = function (ele) {
+			let val,sort_key;
 			// Tabellenfelder auslesen
-			if (ele.getAttribute("data-sort_key")) 
-				val = ele.getAttribute("data-sort_key");
-			else if (ele.getAttribute("sort_key")) 
-				val = ele.getAttribute("sort_key");
+			if (sort_key = ele.getAttribute("data-sort_key")) 
+				val = sort_key;
+			else if (sort_key = ele.getAttribute("sort_key")) 
+				val = sort_key;
 			else 
 				val = ele.textContent;
 			// val = ele.textContent.trim().replace(/\s+/g," ")
+			return val;
+		} // getData
 
+		// Werte in etwas sortierbares umwandeln
+		const convertData = function (val,col) {
+			let dmy,tval,dp;
 			// Zahl
-			if(sorttype[col] == "n"){
+			if(sorttype[col] == "n") {
 				// auf Datum/Zeit prüfen
 				if(!val.search(/^\s*\d+\s*\.\s*\d+\s*\.\s*\d+\s+\d+:\d\d\:\d\d\s*$/)) {  // dd. mm. yyyy hh:mm:ss
 					dp = val.search(":");
@@ -101,9 +109,9 @@
 					dmy[3] = val.substring(dp-2,dp);
 					dmy[4] = val.substring(dp+1,dp+3);
 					dmy[5] = val.substring(dp+4,dp+6);
-					for(var i=0;i<6;i++) dmy[i] = parseInt(dmy[i],10);
+					for(let i=0;i<6;i++) dmy[i] = parseInt(dmy[i],10);
 					dmy = trmdat(dmy);
-					for(var i=3;i<6;i++) if(dmy[i]<10) dmy[i] = "0" + dmy[i];
+					for(let i=3;i<6;i++) if(dmy[i]<10) dmy[i] = "0" + dmy[i];
 					if(debugmodus) console.log(val+": dd. mm. yyyy hh:mm:ss");
 					if(between(dmy[0],1,31) && between(dmy[1],1,12)) 
 						return (""+dmy[2]+dmy[1]+dmy[0]+"."+dmy[3]+dmy[4]+dmy[5]).replace(/ /g,"");
@@ -113,16 +121,16 @@
 					dmy = val.substring(0,dp-2).split(".");
 					dmy[3] = val.substring(dp-2,dp);
 					dmy[4] = val.substring(dp+1,dp+3);
-					for(var i=0;i<5;i++) dmy[i] = parseInt(dmy[i],10);
+					for(let i=0;i<5;i++) dmy[i] = parseInt(dmy[i],10);
 					dmy = trmdat(dmy);
-					for(var i=3;i<5;i++) if(dmy[i]<10) dmy[i] = "0"+dmy[i];
+					for(let i=3;i<5;i++) if(dmy[i]<10) dmy[i] = "0"+dmy[i];
 					if(debugmodus) console.log(val+": dd. mm. yyyy hh:mm");
 					if(between(dmy[0],1,31) && between(dmy[1],1,12)) 
 						return (""+dmy[2]+dmy[1]+dmy[0]+"."+dmy[3]+dmy[4]).replace(/ /g,"");
 				}
 				if(!val.search(/^\s*\d+\s*\.\s*\d+\s*\.\s*\d+/)) { // dd. mm. yyyy
 					dmy = val.split(".");
-					for(var i=0;i<3;i++) dmy[i] = parseInt(dmy[i],10);
+					for(let i=0;i<3;i++) dmy[i] = parseInt(dmy[i],10);
 					dmy = trmdat(dmy);
 					if(debugmodus) console.log(val+": dd. mm. yyyy")
 					if(between(dmy[0],1,31) && between(dmy[1],1,12)) 
@@ -130,38 +138,57 @@
 				}
 				if(!val.search(/^\s*\d+:\d\d\:\d\d\s*$/)) { // hh:mm:ss
 					dmy = val.split(":");
-					for(var i=0;i<3;i++) dmy[i] = parseInt(dmy[i],10);
-					for(var i=0;i<3;i++) if(dmy[i]<10) dmy[i] = "0"+dmy[i];
+					for(let i=0;i<3;i++) dmy[i] = parseInt(dmy[i],10);
+					for(let i=0;i<3;i++) if(dmy[i]<10) dmy[i] = "0"+dmy[i];
 					if(debugmodus) console.log(val+": hh:mm:ss");
 					return ("."+dmy[0]+dmy[1]+dmy[2]).replace(/ /g,"");
 				}
 				if(!val.search(/^\s*\d+:\d\d\s*$/)) { // hh:mm
 					dmy = val.split(":");
-					for(var i=0;i<2;i++) dmy[i] = parseInt(dmy[i],10);
-					for(var i=0;i<2;i++) if(dmy[i]<10) dmy[i] = "0"+dmy[i];
+					for(let i=0;i<2;i++) dmy[i] = parseInt(dmy[i],10);
+					for(let i=0;i<2;i++) if(dmy[i]<10) dmy[i] = "0"+dmy[i];
 					if(debugmodus) console.log(val+": hh:mm");
 					return ("."+dmy[0]+dmy[1]).replace(/ /g,"");
 				}
 
-				// Tausendertrenner entfernen, und , durch . ersetzen ...
-				tval = val.replace(/\s|&nbsp;|&#160;|\u00A0|&#8239;|\u202f|&thinsp;|&#8201;|\u2009/g,"").replace(",", ".");
-				
-				// ... und auf Zahl prüfen
-				if (!isNaN(tval) && tval.search(/[0-9]/) != -1) return tval;    
-
-				// Einheiten etc. entfernen und dann auf Zahl prüfen
-				tval = val.replace(",", ".");
-				tval = parseFloat(tval);
-				if (!isNaN(tval)) return tval;    
+				// Tausendertrenner entfernen, und , durch . ersetzen, und auf Zahl prüfen
+				if(!decimalpoint) {
+					tval = val.replace(/\s|´|'|\./g,"").replace(",", ".");
+					if (!isNaN(tval) && tval.search(/[0-9]/) != -1) {
+						if(debugmodus) console.log(val+", "+tval+": Zahl mit Dezimalkomma");
+						return tval; // Zahl
+					}
+					// Einheiten etc. entfernen und dann auf Zahl prüfen
+					tval = parseFloat(tval);
+					if (!isNaN(tval)) {
+						if(debugmodus) console.log(val+", "+tval+": Zahl mit Einheit");
+						return tval;
+					}    
+				}
+				else {
+					tval = val.replace(/\s|\,/g,"");
+					if (!isNaN(tval) && tval.search(/[0-9]/) != -1) {
+						if(debugmodus) console.log(val+", "+tval+": Zahl mit Dezimalpunkt");
+						return tval; // Zahl
+					}
+					// Einheiten etc. entfernen und dann auf Zahl prüfen
+					tval = parseFloat(tval);
+					if (!isNaN(tval)) {
+						if(debugmodus) console.log(val+", "+tval+": Zahl mit Einheit");
+						return tval;
+					}    
+				}
 			}
 			
 			// String
 			sorttype[col] = "s"; 
+			if(debugmodus) console.log(val+": String");
 			return val;
-		} // getData		
+		} // convertData		
 
-		var vglFkt_s = function(a,b) {
-			var ret = a[sorted].localeCompare(b[sorted],doclang);
+		// Vergleichsfunktion für Strings
+		const vglFkt_s = function(a,b) {
+			let ret = a[sorted].localeCompare(b[sorted],doclang);
 			if(!ret && sorted != minsort) {
 				if(sorttype[minsort] == "s") ret = a[minsort].localeCompare(b[minsort],doclang);
 				else                         ret = a[minsort] - b[minsort];
@@ -169,8 +196,9 @@
 			return ret;
 		} // vglFkt_s
 
-		var vglFkt_n = function(a,b) {
-			var ret = a[sorted] - b[sorted];
+		// Vergleichsfunktion für Zahlen
+		const vglFkt_n = function(a,b) {
+			let ret = a[sorted] - b[sorted];
 			if(!ret && sorted != minsort) {
 				if(sorttype[minsort] == "s") ret = a[minsort].localeCompare(b[minsort],doclang);
 				else                         ret = a[minsort] - b[minsort];
@@ -179,8 +207,9 @@
 		} // vglFkt_n
 
 		// Der Sortierer
-		var tsort = this.tsort = function(col) { 
-			if(typeof(JB_presort)=="function") JB_presort(tab,tbdy,tr,nrows,ncols,col);
+		const tsort = this.tsort = function(col) {
+			// Event feuern
+			fireevent(tab,presort,col);
 			
 			if(debugmodus) console.log(tab,col,sorttype[col]);
 
@@ -213,58 +242,65 @@
 			}
 			
 			// Sortierte Daten zurückschreiben
-			for(var r=0;r<nrows;r++) tbdy.appendChild(arr[r][ncols]); 
+			for(let r=0;r<nrows;r++) tbdy.appendChild(arr[r][ncols]); 
 
-			// Aktuelle sortierung speichern
+			// Aktuelle Sortierung speichern
 			if(savesort) {  
-				var store = { sorted: sorted, desc: sortsymbols[sorted].className.indexOf("sorteddesc")>-1};
+				let store = { sorted: sorted, desc: sortsymbols[sorted].className.indexOf("sorteddesc")>-1};
 				localStorage.setItem(tab.id,JSON.stringify(store));
 			}
 
-			// Callbackfunktion aufrufen
-			if(typeof(JB_aftersort)=="function") JB_aftersort(tab,tbdy,tr,nrows,ncols,col);
+			// Event feuern
+			fireevent(tab,aftersort,col);
 		} // tsort
 		
-		// Tabelle zum Sortieren vorbereiten
+		// Tabelle(n) zum Sortieren vorbereiten
 		
-		// Callbackfunktion aufrufen
-		if(typeof(JB_presortinit)=="function") JB_presortinit(tab,-1,-1,-1,-1,-1);
+		// Event feuern
+		fireevent(tab,presortinit,-1);
+
+		// Debugmodus?
+		const debugmodus = (location.search.toLowerCase().search("debugmodus")!=-1);
 
 		// Dokumentensprache ermitteln
-		var doclang = document.documentElement.lang || "de"; 
+		let doclang = document.documentElement.lang || "de"; 
+		if(doclang.search("de")>-1) doclang = "de"; // auch z.B. de-ch
+		if(debugmodus) console.log("doclang: " + doclang);
 		
-		// Debugmodus?
-		var debugmodus = (location.search.toLowerCase().search("debugmodus")!=-1);
-
+		// Zahlendarstellung
+		const decimalpoint = (tab.classList && tab.classList.contains("dezimalpunkt"));
+		if(debugmodus) console.log(decimalpoint?"Decimalpoint":"Dezimalkomma");
+		
 		// Tabellenelemente ermitteln
-		var thead = tab.tHead;
+		const thead = tab.tHead;
+		let tr_in_thead,tabletitel;
 		if(thead) {
-			var tr_in_thead = thead.querySelectorAll("tr.sortierbar");
+			tr_in_thead = thead.querySelectorAll("tr.sortierbar");
 			if(!tr_in_thead.length) tr_in_thead = thead.rows;
 		}
-		if(tr_in_thead) var tabletitel = tr_in_thead[0].cells;   
+		if(tr_in_thead) tabletitel = tr_in_thead[0].cells;   
 		if( !(tabletitel && tabletitel.length > 0) ) { console.error("Tabelle hat keinen Kopf (thead) und/oder keine Kopfzellen."); return null; }
-		var tbdy = tab.tBodies;
+		let tbdy = tab.tBodies;
 		if( !(tbdy) ) { console.error("Tabelle hat keinen tbody."); return null; }
 		tbdy = tbdy[0];
-		var tr = tbdy.rows;
+		const tr = tbdy.rows;
 		if( !(tr && tr.length > 0) ) { console.error("Tabelle hat keine Zeilen im tbody."); return null; }
-		var nrows = tr.length;
-		var ncols = tabletitel.length;
+		const nrows = tr.length;
+		const ncols = tabletitel.length;
 
 		// Einige Variablen
-		var arr = [];
-		var sorted = -1;
-		var sortsymbols = [];
-		var sortbuttons = [];
-		var sorttype = [];
-		var firstsort = [];
-		var startsort_u = -1,startsort_d = -1;
-		var savesort = tab.className.indexOf("savesort")>-1 && tab.id && tab.id.length>0 && localStorage && location.protocol != "file:";
-		var minsort = -1;
+		let arr = [];
+		let sorted = -1;
+		let sortsymbols = [];
+		let sortbuttons = [];
+		let sorttype = [];
+		let firstsort = [];
+		let startsort_u = -1,startsort_d = -1;
+		let savesort = tab.className.indexOf("savesort")>-1 && tab.id && tab.id.length>0 && localStorage && location.protocol != "file:";
+		let minsort = -1;
 
 		// Hinweistexte
-		var sort_info, sort_hint;
+		let sort_info, sort_hint;
 		if(doclang == "de") {
 			sort_info = {
 				asc: "Tabelle ist aufsteigend nach dieser Spalte sortiert",
@@ -286,55 +322,64 @@
 			}
 		}
 
+		// Sortiersymbol
+		const sortsymbol_svg = '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="-5 -5 190 110"><path  d="M0 0 L50 100 L100 0 Z" style="stroke:currentColor;fill:transparent;stroke-width:10;"/><path d="M80 100 L180 100 L130 0 Z" style="stroke:currentColor;fill:transparent;stroke-width:10;"/></svg>';
+
 		// Stylesheets für Button im TH
 		if(!document.getElementById("JB_stylesheet_tableSort")) {
-			var sortbuttonStyle = document.createElement('style'); 
+			const sortbuttonStyle = document.createElement('style'); 
 			sortbuttonStyle.id = "JB_stylesheet_tableSort";
-			var stylestring = '.sortbutton { width:100%; height:100%; border: none; background-color: transparent; font: inherit; color: inherit; text-align: inherit; padding: 0; cursor: pointer; } ';		
-			stylestring += 'table.sortierbar thead th span.visually-hidden, table[sortable] thead th span.visually-hidden { position: absolute !important; clip: rect(1px, 1px, 1px, 1px) !important; padding: 0 !important; border: 0 !important; height: 1px !important; width: 1px !important; overflow: hidden !important; white-space: nowrap !important; } ';
-			stylestring += '.sortsymbol::after { display: inline-block; letter-spacing: -.2em; margin-left:.1em; width: 1.8em; } ';
-			stylestring += '.sortbutton.sortedasc .sortsymbol::after { content: "▲▽" } ';
-			stylestring += '.sortbutton.sorteddesc .sortsymbol::after { content: "△▼" } ';
-			stylestring += '.sortbutton.unsorted .sortsymbol::after { content: "△▽" } '	;
-			stylestring += '.sortbutton.sortedasc > span.visually-hidden:nth-of-type(1) { display: none } ' ;
-			stylestring += '.sortbutton.sorteddesc > span.visually-hidden:nth-of-type(2) { display: none } ' ;
-			stylestring += '.sortbutton.unsorted > span.visually-hidden:nth-of-type(2) { display: none } ' ;
-			stylestring += 'table.sortierbar caption span{ font-weight: normal; font-size: .8em; } ';
+			const stylestring = '.sortbutton { width:100%; height:100%; border: none; background-color: transparent; font: inherit; color: inherit; text-align: inherit; padding: 0; cursor: pointer; } '
+			 + 'table.sortierbar thead th span.visually-hidden, table[sortable] thead th span.visually-hidden { position: absolute !important; clip: rect(1px, 1px, 1px, 1px) !important; padding: 0 !important; border: 0 !important; height: 1px !important; width: 1px !important; overflow: hidden !important; white-space: nowrap !important; } '
+			 + '.sortsymbol svg { margin-left: .2em; height: .7em; } '
+			 + '.sortbutton.sortedasc .sortsymbol svg path:last-of-type { fill: currentColor !important; } '
+			 + '.sortbutton.sorteddesc .sortsymbol svg path:first-of-type { fill: currentColor!important; } '
+			 + '.sortbutton.sortedasc > span.visually-hidden:nth-of-type(1) { display: none } '
+			 + '.sortbutton.sorteddesc > span.visually-hidden:nth-of-type(2) { display: none } '
+			 + '.sortbutton.unsorted > span.visually-hidden:nth-of-type(2) { display: none } '
+			 + 'table.sortierbar caption span{ font-weight: normal; font-size: .8em; } ';
 			sortbuttonStyle.innerText = stylestring;
 			document.head.appendChild(sortbuttonStyle);
 		}
 
 		// Prüfen, ob kein tr im thead eine entsprechnde Klasse hat
-		var sortflag = false;
-		for(var c=0;c<tabletitel.length;c++) sortflag |= tabletitel[c].className.indexOf("sortier")>-1;
-		if(!sortflag)	for(var c=0;c<tabletitel.length;c++) tabletitel[c].classList.add("sortierbar");
+		let sortflag = false;
+		for(let c=0;c<tabletitel.length;c++) sortflag |= tabletitel[c].className.indexOf("sortier")>-1;
+		// Wenn nicht, alle Spalten sortierbar machen
+		if(!sortflag)	for(let c=0;c<tabletitel.length;c++) tabletitel[c].classList.add("sortierbar");
 		
 		// Kopfzeile vorbereiten
-		for(var c=tabletitel.length-1;c>=0;c--) if(initTableHead(c)) minsort = c;
+		for(let c=tabletitel.length-1;c>=0;c--) if(initTableHead(c)) minsort = c;
 		
 		// Array mit Info, wie Spalte zu sortieren ist, vorbelegen
-		for(var c=0;c<ncols;c++) sorttype[c] = "n";
+		for(let c=0;c<ncols;c++) sorttype[c] = "n";
 		
 		// Tabelleninhalt in ein Array kopieren
-		for(var r=0;r<nrows;r++) {
+		for(let r=0;r<nrows;r++) {
 			arr[r] = [];
-			for(var c=0;c<ncols;c++) {
-				var cc = getData(tr[r].cells[c],c);
-				arr[r][c] = cc ;
-				if(debugmodus) tr[r].cells[c].innerHTML += "<br>"+cc+"<br>"+sorttype[c];
+			for(let c=0;c<ncols;c++) {
+				arr[r][c] = convertData(getData(tr[r].cells[c]),c);
 			}
 			arr[r][ncols] = tr[r];
 		}
-		if(debugmodus) {
-			for(var c=0;c<ncols;c++) tabletitel[c].innerHTML += "<br>" + sorttype[c];
+
+		// Tabellenfelder, die als String sortiert werden sollen, in Strings konvertieren, 
+		// eventuelle Änderungen rückgängig machen
+		for(let c=0;c<ncols;c++) {
+			if(sorttype[c] == "s") {
+				for(let r=0;r<nrows;r++) {
+					arr[r][c] = String(getData(tr[r].cells[c]));
+				}
+			}
 		}
 		
-		// Tabellenfelder, die als String sortiert werden sollen, in Strings konvertieren
-		for(var c=0;c<ncols;c++) {
-			if(sorttype[c] == "s") {
-				for(var r=0;r<nrows;r++) {
-					arr[r][c] = String(arr[r][c]);
-				}
+		// Debuginfos in Tabelle schreiben
+		if(debugmodus) {
+			for(let c=0;c<ncols;c++) tabletitel[c].appendChild(document.createTextNode(" "+sorttype[c])) ;
+			for(let r=0;r<nrows;r++) {
+				for(let c=0;c<ncols;c++) {
+					tr[r].cells[c].innerHTML += "<br>" + arr[r][c];
+				} 
 			}
 		}
 		
@@ -342,7 +387,7 @@
 		tab.classList.add("is_sortable");
 
 		// An caption Hinweis anhängen
-		var caption = tab.caption;
+		const caption = tab.caption;
 		if(caption) caption.innerHTML += doclang=="de"?
 			"<br><span>Ein Klick auf die Spaltenüberschrift sortiert die Tabelle.</span>":
 			"<br><span>A click on the column header sorts the table.</span>";
@@ -355,24 +400,62 @@
 		if(startsort_u >= 0 && startsort_u < ncols) tsort(startsort_u); 
 		if(startsort_d >= 0 && startsort_d < ncols) { tsort(startsort_d); tsort(startsort_d); }
 		
-		// Callbackfunktion aufrufen
-		if(typeof(JB_aftersortinit)=="function") JB_aftersortinit(tab,tbdy,tr,nrows,ncols,-1);
+		// Event feuern
+		fireevent(tab,aftersortinit,-1);
 	
 	} // tableSort
 
-	// Alle Tabellen suchen, die sortiert werden sollen, und den Tabellensortierer starten, wenn gewünscht, alte Sortierung wiederherstellen.
-	if(window.addEventListener) window.addEventListener("DOMContentLoaded",function() { 
-		var sort_Table = document.querySelectorAll("table.sortierbar, table[sortable]");
-		for(var i=0,store;i<sort_Table.length;i++) {
-			store = null;
-			if(location.protocol != "file:" && localStorage && sort_Table[i].className && sort_Table[i].id && sort_Table[i].className.indexOf("savesort")>-1 && sort_Table[i].id.length) {
-				store = localStorage.getItem(sort_Table[i].id);
-				if(store) {
-					store = JSON.parse(store);
-				}
-			}
-			new JB_tableSort(sort_Table[i],store);
+	// Autoload-Parameter prüfen
+	let autoload = true;
+	let scr = document.getElementsByTagName("script");
+	for(let i=scr.length-1;i>=0;i--) if(scr[i].src && scr[i].src.length) {
+		if(scr[i].src.search("TableSort.js")>-1) {
+			autoload = !(scr[i].src.search("autoload=false")>-1);
+			break;
 		}
-	},false); // initTableSort
+	}
+
+	// CustomEvent-Polyfill für IE<=11
+	if ( typeof window.CustomEvent != "function" ) { 
+		function CustomEvent ( event, params ) {
+			params = params || { bubbles: false, cancelable: false, detail: null };
+			const evt = document.createEvent( 'CustomEvent' );
+			evt.initCustomEvent( event, params.bubbles, params.cancelable, params.detail );
+			return evt;
+		}
+		window.CustomEvent = CustomEvent;
+	}		
+
+	// Events anlegen
+	let eventparameter = { sortcol: -1 };
+	const presortinit = new CustomEvent("presortinit", { detail: eventparameter } );
+	const aftersortinit = new CustomEvent("aftersortinit", { detail: eventparameter } );
+	const presort = new CustomEvent("presort", { detail: eventparameter } );
+	const aftersort = new CustomEvent("aftersort", { detail: eventparameter } );
+	const fireevent = function(tab,evt,sortcol) {
+		eventparameter.sortcol = sortcol;
+		tab.dispatchEvent(evt);
+	}	// fireevent
+
+	// Load-Event
+	const TableSortLoaded = new CustomEvent("TableSortLoaded", { detail: { tableSort: JB_tableSort} } );
+	window.dispatchEvent(TableSortLoaded);
+		
+	if(autoload) {
+		window.addEventListener("DOMContentLoaded",function() { 
+		// Alle Tabellen suchen, die sortiert werden sollen, und den Tabellensortierer starten, wenn gewünscht, alte Sortierung wiederherstellen.
+			const sort_Table = document.querySelectorAll("table.sortierbar, table[sortable]");
+			for(let i=0,store;i<sort_Table.length;i++) {
+				store = null;
+				if(location.protocol != "file:" && localStorage && sort_Table[i].className && sort_Table[i].id && sort_Table[i].className.indexOf("savesort")>-1 && sort_Table[i].id.length) {
+					store = localStorage.getItem(sort_Table[i].id);
+					if(store) {
+						store = JSON.parse(store);
+					}
+				}
+				new JB_tableSort(sort_Table[i],store);
+			}
+		},false); // initTableSort
+	} // autoload
 
 })();  

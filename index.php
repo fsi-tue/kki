@@ -56,79 +56,79 @@ if(!($allLocations = $db->getActiveLocations())){
          */
         switch ($item['has_food']) {
             case 0:
-                echo "<td><i class='fas fa-times'></i></td>";
+                echo "<td><span class='hidden'>0</span><i class='fas fa-times'></i></td>";
                 break;
             case 1:
-                echo "<td><i class='fas fa-check'></i></td>";
+                echo "<td><span class='hidden'>1</span><i class='fas fa-check'></i></td>";
                 break;
             case 2:
-                echo "<td><i class='fas fa-question'></i></td>";
+                echo "<td><span class='hidden'>2</span><i class='fas fa-question'></i></td>";
                 break;
         }
         switch ($item['has_beer']) {
             case 0:
-                echo "<td><i class='fas fa-times'></i></td>";
+                echo "<td><span class='hidden'>0</span><i class='fas fa-times'></i></td>";
                 break;
             case 1:
-                echo "<td><i class='fas fa-check'></i></td>";
+                echo "<td><span class='hidden'>1</span><i class='fas fa-check'></i></td>";
                 break;
             case 2:
-                echo "<td><i class='fas fa-question'></i></td>";
+                echo "<td><span class='hidden'>2</span><i class='fas fa-question'></i></td>";
                 break;
         }
         switch ($item['has_cocktails']) {
             case 0:
-                echo "<td><i class='fas fa-times'></i></td>";
+                echo "<td><span class='hidden'>0</span><i class='fas fa-times'></i></td>";
                 break;
             case 1:
-                echo "<td><i class='fas fa-check'></i></td>";
+                echo "<td><span class='hidden'>1</span><i class='fas fa-check'></i></td>";
                 break;
             case 2:
-                echo "<td><i class='fas fa-question'></i></td>";
+                echo "<td><span class='hidden'>2</span><i class='fas fa-question'></i></td>";
                 break;
         }
         switch ($item['has_wifi']) {
             case 0:
-                echo "<td><i class='fas fa-times'></i></td>";
+                echo "<td><span class='hidden'>0</span><i class='fas fa-times'></i></td>";
                 break;
             case 1:
-                echo "<td><i class='fas fa-check'></i></td>";
+                echo "<td><span class='hidden'>1</span><i class='fas fa-check'></i></td>";
                 break;
             case 2:
-                echo "<td><i class='fas fa-question'></i></td>";
+                echo "<td><span class='hidden'>2</span><i class='fas fa-question'></i></td>";
                 break;
         }
         switch ($item['has_togo']) {
             case 0:
-                echo "<td><i class='fas fa-times'></i></td>";
+                echo "<td><span class='hidden'>0</span><i class='fas fa-times'></i></td>";
                 break;
             case 1:
-                echo "<td><i class='fas fa-check'></i></td>";
+                echo "<td><span class='hidden'>1</span><i class='fas fa-check'></i></td>";
                 break;
             case 2:
-                echo "<td><i class='fas fa-question'></i></td>";
+                echo "<td><span class='hidden'>2</span><i class='fas fa-question'></i></td>";
                 break;
         }
         switch ($item['is_smokers']) {
             case 0:
-                echo "<td><i class='fas fa-times'></i></td>";
+                echo "<td><span class='hidden'>0</span><i class='fas fa-times'></i></td>";
                 break;
             case 1:
-                echo "<td><i class='fas fa-check'></i></td>";
+                echo "<td><span class='hidden'>1</span><i class='fas fa-check'></i></td>";
                 break;
             case 2:
-                echo "<td><i class='fas fa-question'></i></td>";
+                echo "<td><span class='hidden'>2</span><i class='fas fa-question'></i></td>";
                 break;
         }
         switch ($item['is_nonsmokers']) {
             case 0:
-                echo "<td><i class='fas fa-times'></i></td>";
+                echo "<td><span class='hidden'>0</span><i class='fas fa-times'></i></td>";
                 break;
             case 1:
-                echo "<td><i class='fas fa-check'></i></td>";
+                echo "<td><span class='hidden'>1</span><i class='fas fa-check'></i></td>";
                 break;
             case 2:
-                echo "<td><i class='fas fa-question'></i></td>";
+                echo "<td><span class='hidden'>2</span><i class='fas fa-question'></i></td>";
                 break;
         }
         echo "</tr>";
