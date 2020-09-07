@@ -15,7 +15,7 @@ echo <<<EOL
 <div id="inputform">
     <span>Falls du ein Feld nicht ausfüllen kannst, ist dies nicht weiter tragisch. Lasse das Feld dann einfach leer.</span>
     <span>Bitte hab Verständnis dafür, dass dein Eintrag zuerst durch einen Moderator freigeschaltet werden muss.</span>
-    <form name="newentry" action="create.php" method="POST">
+    <form name="newentry" action="create.php" method="POST" accept-charset="UTF-8">
         <p>Name der Location: <input type="text" name="name" required></p>
         <p>Adresse (Straße und Hausnummer): <input type="text" name="address" required></p>
         <p>Kategorie: <select name="category" id="category" required>
