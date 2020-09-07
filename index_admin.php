@@ -46,10 +46,10 @@ echo "<tbody>";
 foreach ($allLocations as $item) {
     echo "<tr>";
     if($item['is_active'] == 1) {
-        echo "<td><i class='fas fa-check'></i></td>";
+        echo "<td><span class='hidden'>1</span><i class='fas fa-check'></i></td>";
     }
     if($item['is_active'] == 0) {
-        echo "<td><i class='fas fa-times'></i></td>";
+        echo "<td><span class='hidden'>0</span><i class='fas fa-times'></i></td>";
     }
     echo "<td>{$item['name']}</td>";
     $item['category'] = ucfirst($item['category']);

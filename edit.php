@@ -94,7 +94,7 @@ $base = base64_encode($objectID);
 // fill form with pre-defined values from $locationObject
 echo <<<EOL
 <div id="inputform">
-    <form name="editentry" action="store.php" method="POST">
+    <form name="editentry" action="store.php" method="POST" accept-charset="UTF-8">
         <input type="hidden" name="id" value="{$base}">
         <p>Name der Location: <input type="text" name="name" value="$name" required></p>
         <p>Adresse (Straße und Hausnummer): <input type="text" name="address" value="$address" required></p>
