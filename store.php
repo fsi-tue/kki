@@ -26,22 +26,23 @@ if(isset($_SESSION['userid']) && ($_SESSION['userid'] != 'f0a8ed5d51a3229f154450
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     /*
      * initialize new DB opject and grab POST parameters given by the form.
-     * all fields where users can input strings of any kind are passed through filter_var() with appropriate settings
-     * for each field.
+     * all fields where users can input strings of any kind are passed through either filter_var() 
+     * or htmlspecialchars() with appropriate settings for each field.
+     * @see https://www.php.net/manual/en/filter.filters.sanitize.php
      */
     $db = new DB();
     $id = base64_decode($_POST['id']);
-    $name = filter_var($_POST["name"], FILTER_SANITIZE_STRING);
-    $address = filter_var($_POST["address"], FILTER_SANITIZE_STRING);
+    $name = htmlspecialchars(trim($_POST["name"]), ENT_SUBSTITUTE);
+    $address = htmlspecialchars(trim($_POST["address"]));
     $price_beer = filter_var($_POST["price_beer"], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
     $price_softdrink = filter_var($_POST["price_softdrink"], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
     $url = filter_var($_POST["url"], FILTER_SANITIZE_URL);
-    $phone = filter_var($_POST["phone"], FILTER_SANITIZE_STRING);
-    $description = filter_var($_POST["description"], FILTER_SANITIZE_STRING);
-    $is_smokers = filter_var($_POST["is_smokers"], FILTER_SANITIZE_STRING);
-    $is_nonsmokers = filter_var($_POST["is_nonsmokers"], FILTER_SANITIZE_STRING);
-    $has_wifi = filter_var($_POST["has_wifi"], FILTER_SANITIZE_STRING);
-    $category = filter_var($_POST["category"], FILTER_SANITIZE_STRING);
+    $phone = htmlspecialchars(trim($_POST["phone"]), ENT_SUBSTITUTE);
+    $description = htmlspecialchars(trim($_POST["description"]), ENT_SUBSTITUTE);
+    $is_smokers = htmlspecialchars(trim($_POST["is_smokers"]), ENT_SUBSTITUTE);
+    $is_nonsmokers = htmlspecialchars(trim($_POST["is_nonsmokers"]), ENT_SUBSTITUTE);
+    $has_wifi = htmlspecialchars(trim($_POST["has_wifi"]), ENT_SUBSTITUTE);
+    $category = htmlspecialchars(trim($_POST["category"]), ENT_SUBSTITUTE);
 
     /*
      * If the user 'forgot' to put either http:// or https:// in front of the URL given inside $url,
