@@ -65,92 +65,29 @@ echo <<<EOL
 <span>Telefon:</span><p>$phone</p>
 EOL;
 echo "<span>Gibt es Essen?</span>";
-switch ($has_food) {
-    case 0:
-        echo "<p><i class='fas fa-times'></i></p>";
-        break;
-    case 1:
-        echo "<p><i class='fas fa-check'></i></p>";
-        break;
-    case 2:
-        echo "<p><i class='fas fa-question'></i></p>";
-        break;
-}
-echo "<span>Kann man Essen zum Mitnehmen bestellen?</span>";
-switch ($has_togo) {
-    case 0:
-        echo "<p><i class='fas fa-times'></i></p>";
-        break;
-    case 1:
-        echo "<p><i class='fas fa-check'></i></p>";
-        break;
-    case 2:
-        echo "<p><i class='fas fa-question'></i></p>";
-        break;
-}
+$features = array(
+    "Essen" => $has_food,
+    "Essen zum Mitnehmen" => $has_togo,
+    "Bier" => $has_beer,
+    "Cocktails" => $has_cocktails,
+    "Raucherraum" => $is_smokers,
+    "Nichtraucherbereich" => $is_nonsmokers,
+    "Kostenloses WLAN" => $has_wifi
+);
 
-echo "<span>Gibt es Bier?</span>";
-switch ($has_beer) {
-    case 0:
-        echo "<p><i class='fas fa-times'></i></p>";
-        break;
-    case 1:
-        echo "<p><i class='fas fa-check'></i></p>";
-        break;
-    case 2:
-        echo "<p><i class='fas fa-question'></i></p>";
-        break;
-}
-
-echo "<span>Gibt es Cocktails?</span>";
-switch ($has_cocktails) {
-    case 0:
-        echo "<p><i class='fas fa-times'></i></p>";
-        break;
-    case 1:
-        echo "<p><i class='fas fa-check'></i></p>";
-        break;
-    case 2:
-        echo "<p><i class='fas fa-question'></i></p>";
-        break;
-}
-
-echo "<span>Gibt es einen Raucherraum bzw. Raucherbereich?</span>";
-switch ($is_smokers) {
-    case 0:
-        echo "<p><i class='fas fa-times'></i></p>";
-        break;
-    case 1:
-        echo "<p><i class='fas fa-check'></i></p>";
-        break;
-    case 2:
-        echo "<p><i class='fas fa-question'></i></p>";
-        break;
-}
-
-echo "<span>Gibt es einen Nichtraucherbereich?</span>";
-switch ($is_nonsmokers) {
-    case 0:
-        echo "<p><i class='fas fa-times'></i></p>";
-        break;
-    case 1:
-        echo "<p><i class='fas fa-check'></i></p>";
-        break;
-    case 2:
-        echo "<p><i class='fas fa-question'></i></p>";
-        break;
-}
-echo "<span>Gibt es kostenloses WLAN?</span>";
-switch ($has_wifi) {
-    case 0:
-        echo "<p><i class='fas fa-times'></i></p>";
-        break;
-    case 1:
-        echo "<p><i class='fas fa-check'></i></p>";
-        break;
-    case 2:
-        echo "<p><i class='fas fa-question'></i></p>";
-        break;
+foreach ($features as $feature => $value) {
+    echo "<span>Gibt es $feature?</span>";
+    switch ($value) {
+        case 0:
+            echo "<p><i class='fas fa-times'></i></p>";
+            break;
+        case 1:
+            echo "<p><i class='fas fa-check'></i></p>";
+            break;
+        case 2:
+            echo "<p><i class='fas fa-question'></i></p>";
+            break;
+    }
 }
 
 echo "<span>Beschreibungstext</span>";
