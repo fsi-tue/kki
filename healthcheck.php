@@ -50,20 +50,26 @@ if (!$allLocations) {
 }
 
 
-// Get the location id of the healthcheck entry
-$locationID = -1;
+// Initizalize empty array to store all possible rows that can be pruned
+$prunableLocations = array();
 
 foreach ($allLocations as $location) {
     // Access the data within each $location and check for our entry
-    if ($location['name'] == $healtheck_entry_name){
-        $locationID = $location['id'];
+    if ($location['name'] == $healtheck_entry_name) {
+        array_push($prunableLocations, $location['id']);
     }
-    break;
 }
 
-// Delete the healthcheck entry
-if (!$db->deleteLocationById($locationID)) {
-    echo("Could not delete location!");
+// Delete all rows that are healthcheck rows
+foreach ($prunableLocations as $locationID) {
+    if (!$db->deleteLocationById($locationID)) {
+        echo("Could not delete location: id " . $locationID . "!");
+        exit(1);
+    }
+}
+
+if (!$db->setAutoIncrementToLowestValue()) {
+    echo("Could not set auto increment to lowest value!");
     exit(1);
 }
 

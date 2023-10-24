@@ -224,5 +224,31 @@ class DB
         }
         fclose($fp);
     }
-}
 
+    /**
+     * Set next primary key (id) to lowest value possible.
+     * Without this function, this could have a value of millions with the healthcheck script.
+     * MariaDB automatically set the value to max(primary_key) + 1, but this function is just a fail safe.
+     * @return bool
+     */
+    public function setAutoIncrementToLowestValue() {
+        $query = "SELECT max(id) FROM {$this->mysql_table};";
+        $result = mysqli_query($this->db, $query);
+        $max_id = -1;
+        if (!($result->num_rows > 0)) {
+            return FALSE;
+        }
+        while ($row = mysqli_fetch_row($result)) {
+            $max_id = $row[0];
+        }
+        $result->free();
+
+        $max_id++;
+        $query = "ALTER TABLE {$this->mysql_table} AUTO_INCREMENT = {$max_id};";
+        if(!$result = $this->db->query($query)) {
+            echo "Query failed: (" . $this->db->errno . ") " . $this->db->error;
+            return FALSE;
+        }
+        return TRUE;
+    }
+}
